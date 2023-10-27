@@ -3,7 +3,7 @@ import Navbar from "../../components/shared/Navbar/Navbar";
 const World = () => {
   return (
     <>
-      <Navbar backgroundColor={"#e90000"} page={"world"}/>
+      <Navbar pageName={"world"} backgroundColour={"#e90000"}/>
       <h1>WORLD</h1>
     </>
   );
