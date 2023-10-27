@@ -1,7 +1,8 @@
-import { Toolbar } from "@mui/material";
+import { Toolbar, Typography } from "@mui/material";
 
 interface NavbarProps {
   backgroundColor: string;
+  page: String;
 }
 
 export default function Navbar(props: NavbarProps) {
@@ -11,11 +12,16 @@ export default function Navbar(props: NavbarProps) {
         sx={{
           backgroundColor: props.backgroundColor,
           width: "100%",
+          minHeight: "75px",
+          height: "15vh",
           display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
+          flexWrap: "wrap"
         }}
-      ></Toolbar>
+      >
+        <Typography color={"white"} > TEST </Typography>
+
+
+      </Toolbar>
     </>
   );
 }

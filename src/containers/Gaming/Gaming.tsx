@@ -3,7 +3,7 @@ import Navbar from "../../components/shared/Navbar/Navbar";
 const Gaming = () => {
   return (
     <>
-      <Navbar backgroundColor={"green"} />
+      <Navbar backgroundColor={"#0E7A0D"} page={"gaming"}/>
       <h1>Gaming</h1>
     </>
   );
