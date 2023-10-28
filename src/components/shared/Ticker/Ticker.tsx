@@ -12,15 +12,15 @@ export default function TickerComponent(props: TickerProps){
     
     return (
         <Box sx = {{ backgroundColor: "#cccccc", color: "black", borderTop: "2px solid black", borderBottom: "2px solid black"}}>
-            <Marquee delay={1}>
+            <Marquee autoFill={false} speed={75}>
                 {props.data.map((story, index) => {
                     return (
-                        <Typography fontSize={"1.5rem"}> {props.data[index]} </Typography>
+                        <div style={{display: "flex", alignContent: "center"}} >
+                            <Typography fontSize={"1.5rem"} marginLeft={"5vw"}> {props.data[index]} </Typography>
+                        </div>
                     )
                 })}
             </Marquee>
-            
-                
         </Box>
     )
 
