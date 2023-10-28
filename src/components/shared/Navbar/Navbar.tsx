@@ -2,6 +2,7 @@ import {
   AccountCircle,
   BadgeOutlined,
   Logout,
+  Newspaper,
   Public,
   SportsEsports,
   SportsBasketball,
@@ -39,7 +40,7 @@ export default function Navbar(props: NavbarProps) {
       <Toolbar
         sx={{
           backgroundColor: props.backgroundColour,
-          width: "100vw",
+          width: "100%",
           minHeight: "75px",
           height: "15vh",
           elevation: 1,
@@ -53,8 +54,7 @@ export default function Navbar(props: NavbarProps) {
         </Link>
 
         <Box sx = {{display: "flex", gap: 2, marginLeft: "auto"}}>
-          <Button 
-            //disabled = {props.pageName === "world" ? true : false} 
+          <Button
             onClick={() => navigate("/world")} 
             sx={{flexDirection: "column", textTransform: "none", color: "#fff"}} 
           >
@@ -62,8 +62,7 @@ export default function Navbar(props: NavbarProps) {
             <Typography sx= {{textAlign: "center"}}>World</Typography>
           </Button>
 
-          <Button 
-            //disabled = {props.pageName === "gaming" ? true : false} 
+          <Button
             onClick={() => navigate("/gaming")} 
             sx={{flexDirection: "column", textTransform: "none", color: "#fff" }} 
           >
@@ -71,8 +70,7 @@ export default function Navbar(props: NavbarProps) {
               <Typography sx= {{textAlign: "center"}}>Gaming</Typography>
           </Button>
 
-          <Button 
-            //disabled = {props.pageName === "sport" ? true : false} 
+          <Button
             onClick={() => navigate("/sport")} 
             sx={{flexDirection: "column", textTransform: "none", color: "#fff"}} 
           >
@@ -80,13 +78,20 @@ export default function Navbar(props: NavbarProps) {
             <Typography sx= {{textAlign: "center"}}>Sport</Typography>
           </Button>
 
-          <Button 
-            //disabled = {props.pageName === "tech" ? true : false} 
+          <Button
             onClick={() => navigate("/tech")} 
             sx={{flexDirection: "column", textTransform: "none", color: "#fff"}} 
           >
             <Terminal fontSize="large"/>
             <Typography sx= {{textAlign: "center"}}>Tech</Typography>
+          </Button>
+
+          <Button
+            onClick={() => navigate("/our-news")} 
+            sx={{flexDirection: "column", textTransform: "none", color: "#fff"}} 
+          >
+            <Newspaper fontSize="large"/>
+            <Typography sx= {{textAlign: "center"}}>Our Stories</Typography>
           </Button>
         </Box>
 

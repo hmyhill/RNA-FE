@@ -1,12 +1,11 @@
 import Navbar from "../../components/shared/Navbar/Navbar";
-import TickerComponent from "../../components/shared/Ticker/Ticker";
+import NewsBody from "../../components/shared/Body/NewsBody";
 
 const Sport = () => {
   return (
     <>
       <Navbar pageName={"sport"} backgroundColour={"#FF7A00"} />
-      <TickerComponent data={["Test to see if this works", "story2"]} />
-      <h1>Sport</h1>
+      <NewsBody pageName={"Sports"} backgroundColour={"rgba(255, 122, 0, 0.25)" } />
     </>
   );
 };
