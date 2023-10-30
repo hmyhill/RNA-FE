@@ -98,6 +98,7 @@ export default function Navbar(props: NavbarProps) {
             </Button>
           </Box>
 
+          {/* Menu that displays when the screen width is more than 600px */}
           <Box sx={{ marginLeft: "auto",  display: {xs: "none", sm: "flex"} }}>
             <Tooltip title="View User Options">
               <IconButton onClick={() => setOpen(!open)}>
@@ -105,8 +106,8 @@ export default function Navbar(props: NavbarProps) {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ marginTop: "9vh" }}
-              id="menu-appbar"
+              sx={{ marginTop: "9vh", display: {xs: "none", sm: "flex" } }}
+              id="menu-appbar-narrow"
               anchorOrigin={{
                 vertical: "top",
                 horizontal: "right",
@@ -154,13 +155,15 @@ export default function Navbar(props: NavbarProps) {
             </Menu>
           </Box>
 
-          <Box sx={{ marginLeft: "auto",  display: {xs: "flex", sm: "none"} }}>
+
+          {/* Menu that displays when the screen width is less than 600px */}
+          <Box sx={{ marginLeft: "auto",  display: {xs: "flex", sm: "none" } }}>
               <IconButton onClick={() => setOpen(!open)}>
                 <MenuOutlined sx={{color: "#fff", fontSize: "7vh"}} />
               </IconButton>
             <Menu
-              sx={{ marginTop: "9vh" }}
-              id="menu-appbar"
+              sx={{ marginTop: "9vh", display: {xs: "flex", sm: "none" } }}
+              id="menu-appbar-wide"
               anchorOrigin={{
                 vertical: "top",
                 horizontal: "right",
