@@ -12,7 +12,7 @@ export default function TickerComponent(props: TickerProps){
     
     return (
         <Box sx = {{ backgroundColor: "#cccccc", color: "black", borderTop: "2px solid black", borderBottom: "2px solid black"}}>
-            <Marquee autoFill={false} speed={75}>
+            <Marquee autoFill={false} speed={70}>
                 {props.data.map((story, index) => {
                     return (
                         <div style={{display: "flex", alignContent: "center"}} >

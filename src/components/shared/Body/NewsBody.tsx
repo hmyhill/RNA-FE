@@ -15,10 +15,6 @@ interface BodyProps {
     backgroundColour: string;
 }
 
-interface LShapedProps {
-    text: string;
-}
-
 export default function Body(props: BodyProps){
     let theme = createTheme();
     theme = responsiveFontSizes(theme);
