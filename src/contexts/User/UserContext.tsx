@@ -11,6 +11,7 @@ import { userStatuses } from "./types/userStatuses";
 interface IUserContext {
   userStatus: userStatuses;
   userEmail: string | null;
+  username: string | null;
   onStartup: () => void;
   logout: () => void;
   login: (userStatus: userStatuses, userEmail: string) => void;
@@ -20,6 +21,7 @@ interface IUserContext {
 export const UserContext = createContext<IUserContext>({
   userStatus: "loggedOut",
   userEmail: null,
+  username: null,
   onStartup: () => {},
   logout: () => {},
   login: () => {},
@@ -30,6 +32,7 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   // Establish the user states that are needed
   const [userStatus, setUserStatus] = useState<userStatuses>("loggedOut");
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
 
   //Will load any relevant user related cached data on startup
   const onStartup = useCallback(() => {
@@ -51,6 +54,7 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   const value = {
     userStatus,
     userEmail,
+    username,
     login,
     logout,
     onStartup,
