@@ -12,8 +12,8 @@ interface IUserContext {
   userStatus: userStatuses;
   userEmail: string | null;
   onStartup: () => void;
-  onLogout: () => void;
-  onLogin: (userStatus: userStatuses, userEmail: string) => void;
+  logout: () => void;
+  login: (userStatus: userStatuses, userEmail: string) => void;
 }
 
 //Create the UserContext, assigning fully null values by default (other than userStatus which takes logged out by default)
@@ -21,8 +21,8 @@ export const UserContext = createContext<IUserContext>({
   userStatus: "loggedOut",
   userEmail: null,
   onStartup: () => {},
-  onLogout: () => {},
-  onLogin: () => {},
+  logout: () => {},
+  login: () => {},
 });
 
 //Create the UserContextProvider function, this can be utilised as a contect provider with specific instances of the functions, etc
@@ -37,13 +37,13 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   //Will ensure all relevant access is revoked on logout
-  const onLogout = useCallback(() => {
+  const logout = useCallback(() => {
     //TODO: On logout, ensure JWT is removed from memory
     setUserStatus("loggedOut");
   }, []);
 
   //Ensure relevant accesses are granted on login
-  const onLogin = useCallback((userStatus: userStatuses, userEmail: string) => {
+  const login = useCallback((userStatus: userStatuses, userEmail: string) => {
     //TODO: On login, ensure JWT is generated and stored in appropriate location
     setUserStatus(userStatus);
   }, []);
@@ -51,8 +51,8 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   const value = {
     userStatus,
     userEmail,
-    onLogin,
-    onLogout,
+    login,
+    logout,
     onStartup,
   };
 
