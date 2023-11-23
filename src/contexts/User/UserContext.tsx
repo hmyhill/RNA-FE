@@ -14,7 +14,11 @@ interface IUserContext {
   username: string | null;
   onStartup: () => void;
   logout: () => void;
-  login: (userStatus: userStatuses, userEmail: string) => void;
+  login: (
+    userStatus: userStatuses,
+    userEmail: string,
+    username: string
+  ) => void;
 }
 
 //Create the UserContext, assigning fully null values by default (other than userStatus which takes logged out by default)
@@ -46,10 +50,15 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   //Ensure relevant accesses are granted on login
-  const login = useCallback((userStatus: userStatuses, userEmail: string) => {
-    //TODO: On login, ensure JWT is generated and stored in appropriate location
-    setUserStatus(userStatus);
-  }, []);
+  const login = useCallback(
+    (userStatus: userStatuses, userEmail: string, username: string) => {
+      //TODO: On login, ensure JWT is generated and stored in appropriate location
+      setUserStatus(userStatus);
+      setUserEmail(userEmail);
+      setUsername(username);
+    },
+    []
+  );
 
   const value = {
     userStatus,
