@@ -40,6 +40,7 @@ export default function Navbar(props: NavbarProps) {
   const [open, setOpen] = useState(false);
   const userState = UserState();
 
+  //Function to be called whenever a user attempts to logout or login through the navbar
   const logoutUser = () => {
     //If user is currently logged in, then log them out and send them to the login screen
     if (userState.userStatus !== "loggedOut") {
@@ -52,6 +53,7 @@ export default function Navbar(props: NavbarProps) {
 
   return (
     <>
+      {/* Each of the following buttons should be shown only if the application is in debug mode */}
       {debug && (
         <button
           onClick={() => {
@@ -191,6 +193,7 @@ export default function Navbar(props: NavbarProps) {
               open={open}
               onClose={() => setOpen(false)}
             >
+              {/* Only show the account management button if the user is not currently logged out */}
               {userState.userStatus !== "loggedOut" && (
                 <MenuItem key="manage" onClick={() => navigate("/account")}>
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -221,6 +224,7 @@ export default function Navbar(props: NavbarProps) {
                 </MenuItem>
               )}
 
+              {/* Only show the upload a story button if the user is logged */}
               {userState.userStatus === "admin" && (
                 <MenuItem key="manage" onClick={() => navigate("/upload")}>
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -253,6 +257,7 @@ export default function Navbar(props: NavbarProps) {
                     textAlign="center"
                     marginLeft={"5px"}
                   >
+                    {/* Show "Log In" or "Log Out" dependent on the current status of the user */}
                     {userState.userStatus !== "loggedOut"
                       ? "Log Out"
                       : "Log In"}
@@ -451,6 +456,7 @@ export default function Navbar(props: NavbarProps) {
                 </div>
               </MenuItem>
 
+              {/* Only show the manage account button if the user is not currently logged out */}
               {userState.userStatus !== "loggedOut" && (
                 <MenuItem
                   key="manage"
@@ -485,6 +491,7 @@ export default function Navbar(props: NavbarProps) {
                 </MenuItem>
               )}
 
+              {/* Only show the upload a story button if the user is currently logged in as an admin */}
               {userState.userStatus === "admin" && (
                 <MenuItem
                   key="manage"
@@ -541,6 +548,7 @@ export default function Navbar(props: NavbarProps) {
                     textAlign="center"
                     marginLeft={"5px"}
                   >
+                    {/* Dynamically adjust the text between "Log In" and "Log Out" depending on the current status of the user*/}
                     {userState.userStatus !== "loggedOut"
                       ? "Log Out"
                       : "Log In"}
