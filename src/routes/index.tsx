@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import Account from "../containers/Account/Account";
 import Gaming from "../containers/Gaming/Gaming";
 import Login from "../containers/Login/Login";
@@ -41,7 +42,7 @@ export function getRoutes(userStatus: userStatuses) {
   }
 
   //Ensure that there is a catch all path for 404 pages that will send them to world
-  allowedRoutes.push({ path: "/*", element: <World /> });
+  allowedRoutes.push({ path: "/*", element: <Navigate to={"/world"} /> });
 
   return {
     allowedRoutes,
