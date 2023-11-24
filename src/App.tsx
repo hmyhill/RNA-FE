@@ -1,30 +1,20 @@
-import React from "react";
 import "./App.css";
-import World from "./containers/World/World";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Account from "./containers/Account/Account";
-import Gaming from "./containers/Gaming/Gaming";
-import Login from "./containers/Login/Login";
-import OurNews from "./containers/OurNews/OurNews";
-import Sport from "./containers/Sport/Sport";
-import Tech from "./containers/Tech/Tech";
-import Upload from "./containers/Upload/Upload";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { getRoutes } from "./routes";
+import { UserState } from "./contexts/User/UserContext";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="account" element={<Account />} />
-        <Route path="gaming" element={<Gaming />} />
-        <Route path="login" element={<Login />} />
-        <Route path="our-news" element={<OurNews />} />
-        <Route path="sport" element={<Sport />} />
-        <Route path="tech" element={<Tech />} />
-        <Route path="upload" element={<Upload />} />
-        <Route path="world" element={<World />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  //Load userState from user context
+  const userState = UserState();
+
+  //Dynamically generate allowable routes dependent on the current users status
+  const { allowedRoutes } = getRoutes(userState.userStatus);
+
+  //Create router passing in allowable routes
+  const router = createBrowserRouter(allowedRoutes);
+
+  //Render the page as determined by the router
+  return <RouterProvider router={router} />;
 }
 
 export default App;
