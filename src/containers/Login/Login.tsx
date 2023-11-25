@@ -11,38 +11,60 @@ import { UserState } from "../../contexts/User/UserContext";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  //Loads user context
   const userState = UserState();
+
+  //Establish page specific states for form inputs
   const [emailInput, setEmailInput] = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");
   const [confirmPasswordInput, setConfirmPasswordInput] = useState<string>("");
+
+  //Declare state to track whether the form is in login or signup mode
   const [formMode, setFormMode] = useState<"login" | "signup">("login");
+
+  //Create an example of the form having no problems, then assign this by default to the badDetails state which tracks issues
   const noProblemDetails = { problem: false, description: "" };
   const [badDetails, setBadDetails] = useState<{
     problem: boolean;
     description: string;
   }>(noProblemDetails);
+
+  //Instantiate the react router navigate function
   const navigate = useNavigate();
 
+  //Function to handle the login button being pressed
   const handleLogin = () => {
+    //If form already in login mode
     if (formMode === "login") {
+      //And form is valid
       if (validateForm()) {
         //TODO: Add API request to backend for login and error handling for error being rejected
+        //Login user
         userState.login("standard", "mockEmail", "mockUsername");
+        //Then navigate to homepage
         navigate("world");
       }
     } else {
+      //Otherwise toggle to login mode and clear any errors
       setFormMode("login");
       setBadDetails(noProblemDetails);
     }
   };
+
+  //Function to handle the signup button being pressed
   const handleSignup = () => {
+    //If the form is already in signup mode
     if (formMode === "signup") {
+      //And the form is valid
       if (validateForm()) {
         //TODO: Add API request to backend for signup and error handling for error being rejected
+        //After user signup is successful, execute login logic to update user context with relevant information
         userState.login("standard", "mockEmail", "mockUsername");
+        //Then navigate to world page
         navigate("world");
       }
     } else {
+      //If not already in signup mode, switch to signup and clear any errors
       setFormMode("signup");
       setBadDetails(noProblemDetails);
     }
@@ -58,6 +80,8 @@ const Login = () => {
     } else if (confirmPasswordInput.length === 0 && formMode === "signup") {
       valid = false;
     }
+
+    //If an error has been found, set error message appropriately
     if (!valid) {
       setBadDetails({
         problem: true,
@@ -69,7 +93,7 @@ const Login = () => {
   };
 
   return (
-    //Grid to contain login elements
+    //Place all elements inside grid for easy structuring
     <Grid
       container
       direction="row"
@@ -78,7 +102,7 @@ const Login = () => {
       marginTop="10px"
       padding="5px"
     >
-      {/* Logo grid item*/}
+      {/* First grid item to be site logo */}
       <Grid item xs={8} sm={4} md={2}>
         <Card
           sx={{
@@ -101,9 +125,8 @@ const Login = () => {
       {/*Breakline*/}
       <Grid item xs={12}></Grid>
 
-      {/* Form elements*/}
+      {/* Form elements */}
       <Grid item xs={12} sm={6} md={4}>
-        {/* Place all login elements inside a formatted card element, if the user presses enter key then login should be processed */}
         <Card
           sx={{
             width: "100%",
@@ -114,12 +137,12 @@ const Login = () => {
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              /* Take action dependent on what mode the screen is in */
+              /* On enter key being pressed, execute handleLogin or handleSignup as appropriate */
               formMode === "login" ? handleLogin() : handleSignup();
             }
           }}
         >
-          {/* Text field that user can interact with, loads and sets values to username react hook*/}
+          {/* Email input text box*/}
           <TextField
             id="emailTextBox"
             label="Email"
@@ -132,7 +155,7 @@ const Login = () => {
             margin="dense"
           />
 
-          {/* Same as above */}
+          {/* Password input text box */}
           <TextField
             id="passwordTextBox"
             label="Password"
@@ -148,7 +171,7 @@ const Login = () => {
 
           {/* Only show next section if screen in signup mode*/}
           {formMode === "signup" ? (
-            /* A third text field for password confirm box for when user is in signup */
+            /* Password confirmation test box (for use in signup mode only) */
             <TextField
               id="passwordConfirmTextBox"
               label="Confirm Password"
@@ -163,9 +186,8 @@ const Login = () => {
             />
           ) : null}
 
-          {/* Only show error message if bad details have been entered */}
-          {badDetails ? (
-            /* Further information then shown using typography components */
+          {/* If there is a problem then display error message as appropriate */}
+          {badDetails.problem ? (
             <Typography
               variant="body2"
               color={"red"}
@@ -175,7 +197,7 @@ const Login = () => {
             </Typography>
           ) : null}
 
-          {/* Card Actions stored in this area */}
+          {/* Card actions handles buttons for login form */}
           <CardActions
             sx={{
               width: "100%",
@@ -183,26 +205,22 @@ const Login = () => {
               justifyContent: "right",
             }}
           >
-            {/* On button press, handleLogin function is called to process page */}
+            {/* On button press, handleLogin function is called */}
             {/* Button variant changes depending on the screen mode */}
             <Button
               color="error"
               variant={formMode === "login" ? "contained" : "outlined"}
-              onClick={() => {
-                handleLogin();
-              }}
+              onClick={handleLogin}
             >
               Login
             </Button>
 
-            {/* On button press, handleSignup function is called to process page */}
+            {/* On button press, handleSignup function is called */}
             {/* Button variant changes depending on the screen mode */}
             <Button
               color="error"
               variant={formMode === "signup" ? "contained" : "outlined"}
-              onClick={() => {
-                handleSignup();
-              }}
+              onClick={handleSignup}
             >
               Signup
             </Button>
