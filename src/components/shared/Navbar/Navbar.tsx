@@ -35,7 +35,6 @@ interface NavbarProps {
 export default function Navbar(props: NavbarProps) {
   //SET DEBUG TO TRUE/FALSE TO TOGGLE BETWEEN BEING ABLE TO MANUALLY SET CURRENT USERS PERMISSIONS
   const debug = process.env.REACT_APP_DEBUG_MODE.toUpperCase() === "TRUE";
-  console.log(process.env.REACT_APP_DEBUG_MODE);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const userState = UserState();
