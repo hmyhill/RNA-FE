@@ -14,10 +14,13 @@ import Navbar from "../../components/shared/Navbar/Navbar";
 import React from "react";
 
 const Upload = () => {
+  //Declare textbox and dropdown states
   const [categoryChoice, setCategoryChoice] = React.useState<string>("world");
   const [headline, setHeadline] = React.useState<string>("");
   const [story, setStory] = React.useState<string>("");
   const [imageURL, setImageURL] = React.useState<string>("");
+
+  //Declare error handler state
   const [badDetails, setBadDetails] = React.useState<{
     problem: boolean;
     description: string;
@@ -26,15 +29,20 @@ const Upload = () => {
     description: "",
   });
 
+  //Function to execute on change of the category dropdown
   const handleCategoryChange = (e: SelectChangeEvent) => {
     setCategoryChoice(e.target.value);
   };
 
+  //Function to execute on the upload button being pressed
   const handleUpload = () => {};
 
   return (
     <>
+      {/*Display upload page navbar at the top of the screen */}
       <Navbar pageName={"upload"} backgroundColour={"#7F7F7F"} />
+
+      {/* Store entire page inside grid for structuring*/}
       <Grid
         container
         direction="row"
@@ -43,6 +51,7 @@ const Upload = () => {
         marginTop="10px"
         padding="5px"
       >
+        {/* Page heading grid item */}
         <Grid
           item
           xs={12}
@@ -59,7 +68,9 @@ const Upload = () => {
           </Typography>
         </Grid>
 
+        {/* Main form card grid item*/}
         <Grid item xs={12}>
+          {/* Main form card to contain all inputs*/}
           <Card
             sx={{
               padding: "10px",
@@ -67,11 +78,13 @@ const Upload = () => {
               flexDirection: "column",
             }}
             onKeyDown={(e) => {
+              //If user presses enter key while focus is on this card, execute handleUpload function
               if (e.key === "Enter") {
                 handleUpload();
               }
             }}
           >
+            {/* Headline text input */}
             <TextField
               id="headlineTextBox"
               label="Headline"
@@ -84,6 +97,7 @@ const Upload = () => {
               margin="dense"
             />
 
+            {/* Story text input, this is multiline with a minimum of 5 rows to make it clear to user that it has multiline capability*/}
             <TextField
               id="storyTextBox"
               label="Story"
@@ -98,6 +112,7 @@ const Upload = () => {
               minRows={5}
             />
 
+            {/* Image URL textbox that user can use to provide URL of an image associated with the story if they wish */}
             <TextField
               id="imageURLTextBox"
               label="Image URL"
@@ -110,7 +125,10 @@ const Upload = () => {
               margin="dense"
             />
 
+            {/* Label for select dropdown */}
             <InputLabel id="select-category-label">Select Category</InputLabel>
+
+            {/* Select dropdown allowing user to select the category of their story from a predefined list */}
             <Select
               labelId="select-category-label"
               id="select-category"
@@ -125,6 +143,7 @@ const Upload = () => {
               <MenuItem value={"ourstories"}>Our Stories</MenuItem>
             </Select>
 
+            {/* If something has gone wrong, show details of error in red text*/}
             {badDetails.problem ? (
               <Typography
                 variant="body2"
@@ -140,6 +159,7 @@ const Upload = () => {
                 justifyContent: "right",
               }}
             >
+              {/* Upload story button*/}
               <Button
                 color="error"
                 variant={"contained"}
