@@ -62,7 +62,9 @@ const Account = () => {
       <Navbar pageName={"account"} backgroundColour={"#7F7F7F"} />
       {/* Top level grid container */}
       <Grid container sx={{ justifyContent: "center", width: "100%" }}>
+        {/* Account management grid container */}
         <Grid container xs={12} sm={6}>
+          {/* Account management header card */}
           <Grid item xs={12} sx={{ padding: "5px" }}>
             <Card>
               <CardContent>
@@ -76,6 +78,7 @@ const Account = () => {
             </Card>
           </Grid>
 
+          {/* Update password card*/}
           <Grid item xs={12} sx={{ padding: "5px" }}>
             <Card
               onKeyDown={(e) => {
@@ -133,6 +136,7 @@ const Account = () => {
                 />
               </CardContent>
 
+              {/* If an error has occurred, display to user */}
               {updatePasswordNotification.description !== "" && (
                 <Typography
                   variant="body2"
@@ -167,6 +171,7 @@ const Account = () => {
             </Card>
           </Grid>
 
+          {/* Delete account grid item */}
           <Grid item xs={12} sx={{ padding: "5px" }}>
             <Card
               sx={{
@@ -186,6 +191,7 @@ const Account = () => {
                 <Typography gutterBottom variant="h5" component="div">
                   {"Delete Account"}
                 </Typography>
+                {/* If there has been an error, display it to user */}
                 {deleteAccountError !== "" && (
                   <Typography variant="body2" color={"red"}>
                     {deleteAccountError}
@@ -214,6 +220,7 @@ const Account = () => {
           </Grid>
         </Grid>
 
+        {/* If the user is logged in as an admin, show them the admin management panel */}
         {userState.userStatus === "admin" && (
           <Grid container xs={12} sm={6}>
             <Grid item xs={12} sx={{ padding: "5px" }}>
@@ -236,6 +243,7 @@ const Account = () => {
                     fullWidth={true}
                   />
 
+                  {/* If an error has occurred, display message to user */}
                   {updateRoleNotification.description !== "" && (
                     <Typography
                       variant="body2"
@@ -300,12 +308,14 @@ const Account = () => {
         )}
       </Grid>
 
+      {/* Dialog box can be made to appear on screen to get user input or confirmation on choices*/}
       <Dialog
         open={openDialogueBox}
         onClose={handleCloseConfirm}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
+        {/* Box will be used to confirm user wants to delete account */}
         <DialogTitle id="alert-dialog-title">
           {"Are you sure you want to delete your account?"}
         </DialogTitle>
