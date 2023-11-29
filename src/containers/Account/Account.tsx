@@ -49,9 +49,13 @@ const Account = () => {
 
   //Declare handler functions for button presses
   const handleUpdatePassword = () => {};
-  const handleUpdate = (updateType: string) => {};
-  const handleOpenConfirm = () => {};
-  const handleCloseConfirm = () => {};
+  const handleUpdateUserRole = (updateType: "standard" | "admin") => {};
+  const handleOpenConfirm = () => {
+    setOpenDialogueBox(true);
+  };
+  const handleCloseConfirm = () => {
+    setOpenDialogueBox(false);
+  };
   const handleDeletion = () => {};
   return (
     <>
@@ -274,7 +278,7 @@ const Account = () => {
                     size="small"
                     color="error"
                     variant="contained"
-                    onClick={() => handleUpdate("standard")}
+                    onClick={() => handleUpdateUserRole("standard")}
                     sx={{ textAlign: "center" }}
                   >
                     Standard
@@ -284,7 +288,7 @@ const Account = () => {
                     size="small"
                     color="error"
                     variant="contained"
-                    onClick={() => handleUpdate("admin")}
+                    onClick={() => handleUpdateUserRole("admin")}
                     sx={{ textAlign: "center" }}
                   >
                     Admin
