@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import Account from "../containers/Account/Account";
-import Gaming from "../containers/Gaming/Gaming";
+import Entertainment from "../containers/Entertainment/Entertainment";
 import Login from "../containers/Login/Login";
 import OurNews from "../containers/OurNews/OurNews";
 import Sport from "../containers/Sport/Sport";
@@ -13,7 +13,7 @@ import { userStatuses } from "../contexts/User/types/userStatuses";
 export function getRoutes(userStatus: userStatuses) {
   //Outline default acceptable routes
   let allowedRoutes = [
-    { path: "gaming", element: <Gaming /> },
+    { path: "entertainment", element: <Entertainment /> },
     { path: "our-news", element: <OurNews /> },
     { path: "sport", element: <Sport /> },
     { path: "tech", element: <Tech /> },
