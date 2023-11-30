@@ -44,6 +44,17 @@ const Upload = () => {
   //Function to execute on the upload button being pressed
   const handleUpload = () => {};
 
+  //Function to execute when a user deletes their current story
+  const handleDelete = () => {
+    setCategoryChoice("world");
+    setStory("");
+    setHeadline("");
+    setImageURL("");
+    localStorage.removeItem("rnaUploadStory");
+    localStorage.removeItem("rnaUploadHeadline");
+    localStorage.removeItem("rnaUploadImageURL");
+  };
+
   //Function to fade the autosave text and icon in then out
   const fadeAutosave = () => {
     setShowAutosave(true);
@@ -146,6 +157,7 @@ const Upload = () => {
               value={headline}
               onChange={(e: any) => setHeadline(e.target.value)}
               margin="dense"
+              required={true}
             />
 
             {/* Story text input, this is multiline with a minimum of 5 rows to make it clear to user that it has multiline capability*/}
@@ -161,6 +173,7 @@ const Upload = () => {
               margin="dense"
               multiline={true}
               minRows={5}
+              required={true}
             />
 
             {/* Image URL textbox that user can use to provide URL of an image associated with the story if they wish */}
@@ -174,6 +187,7 @@ const Upload = () => {
               value={imageURL}
               onChange={(e: any) => setImageURL(e.target.value)}
               margin="dense"
+              required={true}
             />
 
             {/* Label for select dropdown */}
@@ -210,6 +224,15 @@ const Upload = () => {
                 justifyContent: "right",
               }}
             >
+              {/* Delete Story button*/}
+              <Button
+                color="error"
+                variant={"contained"}
+                onClick={handleDelete}
+              >
+                Delete Story
+              </Button>
+
               {/* Upload story button*/}
               <Button
                 color="error"
