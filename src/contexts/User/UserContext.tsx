@@ -11,13 +11,15 @@ import { userStatuses } from "./types/userStatuses";
 interface IUserContext {
   userStatus: userStatuses;
   userEmail: string | null;
+  userID: number | null;
   username: string | null;
   onStartup: () => void;
   logout: () => void;
   login: (
     userStatus: userStatuses,
     userEmail: string,
-    username: string
+    username: string,
+    userID: number
   ) => void;
 }
 
@@ -26,6 +28,7 @@ export const UserContext = createContext<IUserContext>({
   userStatus: "loggedOut",
   userEmail: null,
   username: null,
+  userID: null,
   onStartup: () => {},
   logout: () => {},
   login: () => {},
@@ -35,6 +38,7 @@ export const UserContext = createContext<IUserContext>({
 const UserContextProvider = ({ children }: PropsWithChildren) => {
   // Establish the user states that are needed
   const [userStatus, setUserStatus] = useState<userStatuses>("loggedOut");
+  const [userID, setUserID] = useState<number | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
 
@@ -51,8 +55,14 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
 
   //Ensure relevant accesses are granted on login
   const login = useCallback(
-    (userStatus: userStatuses, userEmail: string, username: string) => {
+    (
+      userStatus: userStatuses,
+      userEmail: string,
+      username: string,
+      userID: number
+    ) => {
       //TODO: On login, ensure JWT is generated and stored in appropriate location
+      setUserID(userID);
       setUserStatus(userStatus);
       setUserEmail(userEmail);
       setUsername(username);
@@ -61,6 +71,7 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   );
 
   const value = {
+    userID,
     userStatus,
     userEmail,
     username,

@@ -40,7 +40,7 @@ const Login = () => {
       if (validateForm()) {
         //TODO: Add API request to backend for login and error handling for error being rejected
         //Login user
-        userState.login("standard", "mockEmail", "mockUsername");
+        userState.login("standard", "mockEmail", "mockUsername", 1);
         //Then navigate to homepage
         navigate("world");
       }
@@ -59,7 +59,7 @@ const Login = () => {
       if (validateForm()) {
         //TODO: Add API request to backend for signup and error handling for error being rejected
         //After user signup is successful, execute login logic to update user context with relevant information
-        userState.login("standard", "mockEmail", "mockUsername");
+        userState.login("standard", "mockEmail", "mockUsername", 1);
         //Then navigate to world page
         navigate("world");
       }
