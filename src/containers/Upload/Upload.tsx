@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   CardActions,
+  Fade,
   Grid,
   InputLabel,
   MenuItem,
@@ -12,15 +13,24 @@ import {
 } from "@mui/material";
 import Navbar from "../../components/shared/Navbar/Navbar";
 import React from "react";
+import SaveIcon from "@mui/icons-material/Save";
 
 const Upload = () => {
   //Declare textbox and dropdown states
-  const [categoryChoice, setCategoryChoice] = React.useState<string>("world");
-  const [headline, setHeadline] = React.useState<string>("");
-  const [story, setStory] = React.useState<string>("");
-  const [imageURL, setImageURL] = React.useState<string>("");
+  const [categoryChoice, setCategoryChoice] = React.useState<string>(
+    localStorage.getItem("rnaUploadCategory") ?? "world"
+  );
+  const [headline, setHeadline] = React.useState<string>(
+    localStorage.getItem("rnaUploadHeadline") ?? ""
+  );
+  const [story, setStory] = React.useState<string>(
+    localStorage.getItem("rnaUploadStory") ?? ""
+  );
+  const [imageURL, setImageURL] = React.useState<string>(
+    localStorage.getItem("rnaUploadImageURL") ?? ""
+  );
 
-  //Declare error handler state
+  //Declare control states
   const [badDetails, setBadDetails] = React.useState<{
     problem: boolean;
     description: string;
@@ -29,13 +39,33 @@ const Upload = () => {
     description: "",
   });
 
-  //Function to execute on change of the category dropdown
-  const handleCategoryChange = (e: SelectChangeEvent) => {
-    setCategoryChoice(e.target.value);
-  };
+  const [showAutosave, setShowAutosave] = React.useState<boolean>(false);
 
   //Function to execute on the upload button being pressed
   const handleUpload = () => {};
+
+  //Function to fade the autosave text and icon in then out
+  const fadeAutosave = () => {
+    setShowAutosave(true);
+    setTimeout(() => {
+      setShowAutosave(false);
+    }, 500);
+  };
+
+  //React use effect will continually restart a 1 second timer when any of the headline, story, imageURL, or category are changed
+  //After 2 seconds it will then save the contents for offline use.
+  //This effectively debounces the save operation to save performance
+  React.useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      localStorage.setItem("rnaUploadCategory", categoryChoice);
+      localStorage.setItem("rnaUploadStory", story);
+      localStorage.setItem("rnaUploadHeadline", headline);
+      localStorage.setItem("rnaUploadImageURL", imageURL);
+      fadeAutosave();
+    }, 1000);
+
+    return () => clearTimeout(debounceTimeout);
+  }, [categoryChoice, story, headline, imageURL]);
 
   return (
     <>
@@ -66,6 +96,27 @@ const Upload = () => {
           >
             Upload a story
           </Typography>
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          sx={{ width: "100%", justifyContent: "center", marginBottom: "5px" }}
+        >
+          {/* Utilise MUIs fade API to create a fadeable text and icon combination for autosave functionality */}
+          <Fade appear={false} timeout={500} in={showAutosave}>
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="div"
+              align="center"
+              color="green"
+              sx={{ justifyContent: "center" }}
+            >
+              Offline Autosave
+              <SaveIcon color="success"></SaveIcon>
+            </Typography>
+          </Fade>
         </Grid>
 
         {/* Main form card grid item*/}
@@ -134,7 +185,7 @@ const Upload = () => {
               id="select-category"
               value={categoryChoice}
               label="Select Category"
-              onChange={handleCategoryChange}
+              onChange={(e: any) => setCategoryChoice(e.target.value)}
             >
               <MenuItem value={"world"}>World</MenuItem>
               <MenuItem value={"entertainment"}>Entertainment</MenuItem>
