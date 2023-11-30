@@ -14,6 +14,7 @@ import {
 import Navbar from "../../components/shared/Navbar/Navbar";
 import React from "react";
 import SaveIcon from "@mui/icons-material/Save";
+import { httpPost } from "../../utils/api.utils";
 
 const Upload = () => {
   //Declare textbox and dropdown states
@@ -32,17 +33,44 @@ const Upload = () => {
 
   //Declare control states
   const [badDetails, setBadDetails] = React.useState<{
-    problem: boolean;
+    type: string;
     description: string;
   }>({
-    problem: false,
+    type: "success",
     description: "",
   });
 
   const [showAutosave, setShowAutosave] = React.useState<boolean>(false);
 
   //Function to execute on the upload button being pressed
-  const handleUpload = () => {};
+  const handleUpload = async () => {
+    if (headline.length === 0 || story.length === 0 || imageURL.length === 0) {
+      setBadDetails({
+        type: "error",
+        description: "Please enter all fields before uploading",
+      });
+    } else {
+      try {
+        await httpPost("story/upload", {
+          title: headline,
+          content: story,
+          category: categoryChoice,
+          image_url: imageURL,
+        });
+        handleDelete();
+        setBadDetails({
+          type: "success",
+          description: "Uploaded succesfully",
+        });
+      } catch (error) {
+        setBadDetails({
+          type: "error",
+          description:
+            "There was an issue uploading your story, please try again",
+        });
+      }
+    }
+  };
 
   //Function to execute when a user deletes their current story
   const handleDelete = () => {
@@ -209,10 +237,10 @@ const Upload = () => {
             </Select>
 
             {/* If something has gone wrong, show details of error in red text*/}
-            {badDetails.problem ? (
+            {badDetails.description !== "" ? (
               <Typography
                 variant="body2"
-                color={"red"}
+                color={badDetails.type === "success" ? "green" : "red"}
                 sx={{ width: "100%", height: "100%", textAlign: "right" }}
               >
                 {badDetails.description}
