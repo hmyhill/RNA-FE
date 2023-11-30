@@ -203,12 +203,14 @@ const Login = () => {
               width: "100%",
               height: "100%",
               justifyContent: "right",
+              px: "0",
+              py: "4px"
             }}
           >
             {/* On button press, handleLogin function is called */}
             {/* Button variant changes depending on the screen mode */}
             <Button
-              color="error"
+              color = "success"
               variant={formMode === "login" ? "contained" : "outlined"}
               onClick={handleLogin}
             >
@@ -218,7 +220,7 @@ const Login = () => {
             {/* On button press, handleSignup function is called */}
             {/* Button variant changes depending on the screen mode */}
             <Button
-              color="error"
+              color="info"
               variant={formMode === "signup" ? "contained" : "outlined"}
               onClick={handleSignup}
             >

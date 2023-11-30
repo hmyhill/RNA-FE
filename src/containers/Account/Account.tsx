@@ -9,6 +9,7 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -71,8 +72,8 @@ const Account = () => {
                 <Typography gutterBottom variant="h5" component="div">
                   {"Account Management For: " + userState?.userEmail ?? ""}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {"Users Role: " + userState?.userStatus}
+                <Typography variant="body1" color="text.secondary">
+                  {"Current Role: " + userState?.userStatus}
                 </Typography>
               </CardContent>
             </Card>
@@ -98,9 +99,33 @@ const Account = () => {
                   justifyContent: "center",
                 }}
               >
-                <Typography gutterBottom variant="h5" component="div">
-                  {"Change Password"}
-                </Typography>
+                <Stack
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent= "space-between"
+                >
+                  <Typography variant="h5">
+                    Change Password
+                  </Typography>
+
+                  <CardActions
+                    sx={{
+                      justifyContent: "right",
+                      p: "0"
+                    }}
+                  >
+                    <Button
+                      size="small"
+                      color="error"
+                      variant="contained"
+                      onClick={() => handleUpdatePassword()}
+                      endIcon={<SyncLockIcon />}
+                    >
+                      Update Password
+                    </Button>
+                  </CardActions>
+                </Stack>
+
                 <TextField
                   label="Old Password"
                   variant="filled"
@@ -150,24 +175,6 @@ const Account = () => {
                   {updatePasswordNotification.description}
                 </Typography>
               )}
-
-              <CardActions
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  size="small"
-                  color="error"
-                  variant="contained"
-                  onClick={() => handleUpdatePassword()}
-                  endIcon={<SyncLockIcon />}
-                >
-                  Update Password
-                </Button>
-              </CardActions>
             </Card>
           </Grid>
 
@@ -176,20 +183,18 @@ const Account = () => {
             <Card
               sx={{
                 width: "100%",
-                padding: "0px",
                 display: "flex",
                 flexDirection: "column",
               }}
             >
               <CardContent
                 sx={{
-                  width: "100%",
-                  height: "100%",
-                  justifyContent: "center",
+                  display: "flex",
+                  justifyContent: "space-between",
                 }}
               >
-                <Typography gutterBottom variant="h5" component="div">
-                  {"Delete Account"}
+                <Typography variant="h5">
+                  Delete Account
                 </Typography>
                 {/* If there has been an error, display it to user */}
                 {deleteAccountError !== "" && (
@@ -197,25 +202,24 @@ const Account = () => {
                     {deleteAccountError}
                   </Typography>
                 )}
-              </CardContent>
-
-              <CardActions
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  size="small"
-                  color="error"
-                  variant="contained"
-                  onClick={handleOpenConfirm}
-                  startIcon={<DeleteIcon />}
+              
+                <CardActions
+                  sx={{
+                    p: "0",
+                    justifyContent: "right",
+                  }}
                 >
-                  DELETE
-                </Button>
-              </CardActions>
+                  <Button
+                    size="small"
+                    color="error"
+                    variant="contained"
+                    onClick={handleOpenConfirm}
+                    startIcon={<DeleteIcon />}
+                  >
+                    DELETE
+                  </Button>
+                </CardActions>
+              </CardContent>
             </Card>
           </Grid>
         </Grid>
@@ -224,50 +228,49 @@ const Account = () => {
         {userState.userStatus === "admin" && (
           <Grid container xs={12} sm={6}>
             <Grid item xs={12} sx={{ padding: "5px" }}>
-              <Card sx={{ width: "100%" }}>
-                <CardContent
-                  sx={{
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography gutterBottom variant="h5" component="div">
-                    Admin Panel
+              <Card sx={{
+                padding: "10px",
+                display: "flex",
+                flexDirection: "column",
+              }}>
+                <Typography variant="h5" component="div">
+                  Admin Panel
+                </Typography>
+
+                <TextField
+                  label="Account to update"
+                  variant="filled"
+                  color="primary"
+                  value={updateRoleEmail}
+                  onChange={(e: any) => setUpdateRoleEmail(e.target.value)}
+                  fullWidth={true}
+                  margin="dense"
+                />
+
+                {/* If an error has occurred, display message to user */}
+                {updateRoleNotification.description !== "" && (
+                  <Typography
+                    variant="body2"
+                    color={
+                      updateRoleNotification.type === "error"
+                        ? "red"
+                        : "DarkSeaGreen"
+                    }
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      textAlign: "right",
+                    }}
+                  >
+                    {updateRoleNotification.description}
                   </Typography>
-
-                  <TextField
-                    label="Account to update"
-                    variant="filled"
-                    color="primary"
-                    value={updateRoleEmail}
-                    onChange={(e: any) => setUpdateRoleEmail(e.target.value)}
-                    fullWidth={true}
-                  />
-
-                  {/* If an error has occurred, display message to user */}
-                  {updateRoleNotification.description !== "" && (
-                    <Typography
-                      variant="body2"
-                      color={
-                        updateRoleNotification.type === "error"
-                          ? "red"
-                          : "DarkSeaGreen"
-                      }
-                      sx={{
-                        width: "100%",
-                        height: "100%",
-                        textAlign: "right",
-                      }}
-                    >
-                      {updateRoleNotification.description}
-                    </Typography>
-                  )}
-                </CardContent>
+                )}
 
                 <CardActions
                   sx={{
                     display: "flex",
-                    flexWrap: "wrap",
                     justifyContent: "right",
+                    p: "0"
                   }}
                 >
                   <Typography
@@ -275,11 +278,9 @@ const Account = () => {
                     sx={{
                       width: "100%",
                       height: "100%",
-                      textAlign: "right",
-                      padding: "5px",
                     }}
                   >
-                    Set Permissions For User To
+                    Set User Permissions To
                   </Typography>
 
                   <Button
@@ -287,7 +288,7 @@ const Account = () => {
                     color="error"
                     variant="contained"
                     onClick={() => handleUpdateUserRole("standard")}
-                    sx={{ textAlign: "center" }}
+                    sx={{ textAlign: "center", minWidth: "90px" }}
                   >
                     Standard
                   </Button>

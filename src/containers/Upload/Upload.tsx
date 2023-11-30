@@ -7,7 +7,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -116,17 +116,20 @@ const Upload = () => {
         >
           {/* Utilise MUIs fade API to create a fadeable text and icon combination for autosave functionality */}
           <Fade appear={false} timeout={500} in={showAutosave}>
-            <Typography
-              gutterBottom
-              variant="h6"
-              component="div"
-              align="center"
-              color="green"
-              sx={{ justifyContent: "center" }}
+            <Stack
+                display= "flex"
+                flexDirection= "row"
+                alignItems= "center"
+                justifyContent= "center"
             >
-              Offline Autosave
+              <Typography
+                variant="h6"
+                color="green"
+              >
+                Offline Autosave  
+              </Typography>
               <SaveIcon color="success"></SaveIcon>
-            </Typography>
+            </Stack>
           </Fade>
         </Grid>
 
@@ -222,6 +225,8 @@ const Upload = () => {
             <CardActions
               sx={{
                 justifyContent: "right",
+                p: "0",
+                mt: "4px"
               }}
             >
               {/* Delete Story button*/}
