@@ -18,6 +18,7 @@ import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SyncLockIcon from "@mui/icons-material/SyncLock";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { httpDelete, httpPost } from "../../utils/api.utils";
 
 const Account = () => {
   //Declare all field related states
@@ -48,15 +49,90 @@ const Account = () => {
   const userState = UserState();
 
   //Declare handler functions for button presses
-  const handleUpdatePassword = () => {};
-  const handleUpdateUserRole = (updateType: "standard" | "admin") => {};
+  const handleUpdatePassword = async () => {
+    //Throw an error if any fields are missing
+    if (
+      oldPassword.length === 0 ||
+      newPassword.length === 0 ||
+      newPasswordConfirm.length === 0
+    ) {
+      setUpdatePasswordNotification({
+        type: "error",
+        description: "All fields must be entered",
+      });
+    } else if (newPassword !== newPasswordConfirm) {
+      //Throw an error if the password confirmation does not match the provided new password
+      setUpdatePasswordNotification({
+        type: "error",
+        description: "Your provided passwords do not match",
+      });
+    } else {
+      //If all fields are ok, attempt to send request to backend
+      try {
+        await httpPost("/user/changepassword", {
+          email: userState.userEmail,
+          newpassword: newPassword,
+        });
+        setUpdatePasswordNotification({
+          type: "success",
+          description: "Password updated successfully",
+        });
+      } catch (error) {
+        //If anything goes wrong, throw an error
+        setUpdatePasswordNotification({
+          type: "error",
+          description:
+            "There was an error while updating your password, please try again",
+        });
+      }
+    }
+  };
+
+  //Handles processing a user update
+  const handleUpdateUserRole = async (updateType: "standard" | "admin") => {
+    //If no email is provided, throw error
+    if (updateRoleEmail.length === 0) {
+      setUpdateRoleNotification({
+        type: "error",
+        description: "Please enter a role to update",
+      });
+    } else {
+      try {
+        //Attempt to update role
+        await httpPost("/user/changepermissions", {
+          email: userState.userEmail,
+          role: updateType,
+        });
+        setUpdateRoleNotification({
+          type: "success",
+          description: "Role updated successfully",
+        });
+      } catch (error) {
+        //Throw an error if something has gone wrong
+        setUpdateRoleNotification({
+          type: "error",
+          description:
+            "There was an issue while updating this role. Please try again",
+        });
+      }
+    }
+  };
   const handleOpenConfirm = () => {
     setOpenDialogueBox(true);
   };
   const handleCloseConfirm = () => {
     setOpenDialogueBox(false);
   };
-  const handleDeletion = () => {};
+  const handleDeletion = async () => {
+    try {
+      await httpDelete("/user/delete/" + userState.userID);
+    } catch (error) {
+      setDeleteAccountError(
+        "There was a problem while deleting your account. Please try again"
+      );
+    }
+    setOpenDialogueBox(false);
+  };
   return (
     <>
       <Navbar pageName={"account"} backgroundColour={"#7F7F7F"} />

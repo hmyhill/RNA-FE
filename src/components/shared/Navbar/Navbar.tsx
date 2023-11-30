@@ -56,7 +56,7 @@ export default function Navbar(props: NavbarProps) {
       {debug && (
         <button
           onClick={() => {
-            userState.login("standard", "mockEmail", "mockUsername");
+            userState.login("standard", "mockEmail", "mockUsername", 1);
           }}
         >
           Standard
@@ -65,7 +65,7 @@ export default function Navbar(props: NavbarProps) {
       {debug && (
         <button
           onClick={() => {
-            userState.login("admin", "mockEmail", "mockUsername");
+            userState.login("admin", "mockEmail", "mockUsername", 1);
           }}
         >
           Admin
