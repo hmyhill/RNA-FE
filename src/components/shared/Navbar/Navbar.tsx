@@ -5,7 +5,7 @@ import {
   MenuOutlined,
   Newspaper,
   Public,
-  SportsEsports,
+  LiveTv,
   SportsBasketball,
   Terminal,
   Upload,
@@ -122,15 +122,15 @@ export default function Navbar(props: NavbarProps) {
             </Button>
 
             <Button
-              onClick={() => navigate("/gaming")}
+              onClick={() => navigate("/entertainment")}
               sx={{
                 flexDirection: "column",
                 textTransform: "none",
                 color: "#fff",
               }}
             >
-              <SportsEsports fontSize="large" />
-              <Typography sx={{ textAlign: "center" }}>Gaming</Typography>
+              <LiveTv fontSize="large" />
+              <Typography sx={{ textAlign: "center" }}>Entertainment</Typography>
             </Button>
 
             <Button
@@ -320,8 +320,7 @@ export default function Navbar(props: NavbarProps) {
                       textAlign="center"
                       marginLeft={"5px"}
                     >
-                      {" "}
-                      Technology{" "}
+                      Technology
                     </Typography>
                   </div>
                 </div>
@@ -352,16 +351,15 @@ export default function Navbar(props: NavbarProps) {
                       textAlign="center"
                       marginLeft={"5px"}
                     >
-                      {" "}
-                      Sport{" "}
+                      Sport
                     </Typography>
                   </div>
                 </div>
               </MenuItem>
 
               <MenuItem
-                key="gaming"
-                onClick={() => navigate("/gaming")}
+                key="entertainment"
+                onClick={() => navigate("/entertainment")}
                 sx={{
                   backgroundColor: "#0E7A0D",
                   color: "#fff",
@@ -373,7 +371,7 @@ export default function Navbar(props: NavbarProps) {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  <SportsEsports
+                  <LiveTv
                     sx={{
                       fontSize: "40px",
                     }}
@@ -384,8 +382,7 @@ export default function Navbar(props: NavbarProps) {
                       textAlign="center"
                       marginLeft={"5px"}
                     >
-                      {" "}
-                      Gaming{" "}
+                      Entertainment
                     </Typography>
                   </div>
                 </div>
@@ -416,8 +413,7 @@ export default function Navbar(props: NavbarProps) {
                       textAlign="center"
                       marginLeft={"5px"}
                     >
-                      {" "}
-                      World{" "}
+                      World
                     </Typography>
                   </div>
                 </div>
@@ -448,8 +444,7 @@ export default function Navbar(props: NavbarProps) {
                       textAlign="center"
                       marginLeft={"5px"}
                     >
-                      {" "}
-                      Our News{" "}
+                      Our News
                     </Typography>
                   </div>
                 </div>
