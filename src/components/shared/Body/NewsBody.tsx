@@ -16,12 +16,20 @@ interface BodyProps {
 }
 
 export default function Body(props: BodyProps){
-    let theme = createTheme();
+    let theme = createTheme({
+        typography: {
+          fontFamily: [
+            'DM Serif Display',
+          ].join(','),
+        },});
     theme = responsiveFontSizes(theme);
+    //Added A new News font to News body pages, if you want to change this
+        //or add additional fonts switch out font in the typeography square brackets[]
 
     /* NEED TO ADD REQUEST TO GET STORIES RELEVANT TO PAGE NAME */
 
-    let data: string[] = ["Test to see if this works", "story2", "story3"]
+    let data: string[] = ["Story 1.", "Story 2.", "Story 3."]
+    //You can place variables with the news paper details in the story 1 -3 sections.
 
     return (
         <>

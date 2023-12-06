@@ -102,6 +102,15 @@ export default function Navbar(props: NavbarProps) {
             />
           </Link>
 
+          <Box>
+          <Button
+              onClick={() => navigate("/world")} 
+              sx={{flexDirection: "column", textTransform: "none", color: "#fff"}} 
+            >
+          <Typography variant="h2">NEWS</Typography>
+          </Button>
+          </Box>
+
           <Box
             sx={{
               display: { xs: "none", sm: "flex" },
