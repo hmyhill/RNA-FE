@@ -1,5 +1,6 @@
 import {
     Box,
+    Container,
     Grid,
     Stack,
     Typography
@@ -10,6 +11,7 @@ import {
     responsiveFontSizes 
 } from '@mui/material/styles';
 import TickerComponent from "../Ticker/Ticker";
+import MUIcard from "../MUICard/MUIcard";
 
 interface BodyProps {
     pageName: string;
@@ -17,9 +19,17 @@ interface BodyProps {
     newsStories: any[]
 }
 
+
 export default function Body(props: BodyProps){
-    let theme = createTheme();
+    let theme = createTheme({
+        typography: {
+          fontFamily: [
+            'DM Serif Display',
+          ].join(','),
+        },});
     theme = responsiveFontSizes(theme);
+    //Added A new News font to News body pages, if you want to change this
+        //or add additional fonts switch out font in the typeography square brackets[]
 
     const nav = () => {
         const url = props.newsStories[0]?.link; 
@@ -34,7 +44,7 @@ export default function Body(props: BodyProps){
     return (
         <>
             <TickerComponent data={props.newsStories.map(story => story.title)} />
-            {/*<ThemeProvider theme = {theme}>*/}
+            <ThemeProvider theme = {theme}>
                 <Box id="MainStoryWide" sx = {{ display: { xs: "none", sm: "flex" }, margin: "2%", height: "40vh", color: "black" }}>
                     <div style = {{ display: "flex", flexDirection: "column", width: "100%" }} >
                         <Box sx={{ backgroundColor: props.backgroundColour, height: "11%", marginBottom: "0.25%", border: "2px solid black", borderTopRightRadius: "1vw", borderTopLeftRadius: "1vw", overflow: "hidden"}}>
@@ -65,36 +75,43 @@ export default function Body(props: BodyProps){
                     </Box>
                 </Box>
 
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: props.backgroundColour, height: "10vh", margin: "2%", margintTop: "0%", border: "1px solid black", borderRadius: "3vw"}}>
+                    <Typography variant={"h4"} > Other {props.pageName} Stories For You </Typography>
+                </Box>
 
-
-                {minorStories.length !== 0 ? (
-                    <Stack>
-                        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: props.backgroundColour, height: "10vh", margin: "2%", margintTop: "0%", border: "2px solid black", borderRadius: "3vw"}}>
-                            <Typography variant={"h4"} > Other {props.pageName} Stories For You </Typography>
-                        </Box>
-
-                        <Box sx={{ flexGrow: 1 }}>
-                            <Grid container columns= {12} rowSpacing={1} columnSpacing={2} margin="0px" width="100%">
-                                {minorStories.map((story, index) => {
-                                    return (
-                                        <Grid item xs={12} sm={6} md={4} sx={{ padding: "0 !important" }}>
-                                            <Box sx={{ backgroundColor: props.backgroundColour, margin: "2%" }} onClick={nav}>    
-                                                <Box sx={{ backgroundColor: "white", margin: "2%", height: "25vh", border: "2px solid black"}}>
-                                                    {story[index].image_url}
-                                                </Box>
-                                                <Box sx={{ margin: "2%", height: "25vh" }}>
-                                                    <Typography variant={"h6"} > {story[index].content} </Typography>
-                                                </Box>
-                                            </Box>
-                                        </Grid>
-                                    )
-                                })}
+                <Box sx={{ flexGrow: 1 }}>
+                    <Grid container columns= {12} rowSpacing={1} columnSpacing={2} margin="0px" width="100%">
+                        {minorStories.map((story, index) => {
+                            return (
+                                <Grid item xs={12} sm={6} md={4} sx={{ padding: "0 !important" }} style={{overflow: 'auto'}}>
+                                    {/*added auto overflow for side scrolling*/}
+                                    <Box sx={{ backgroundColor: props.backgroundColour, margin: "5%" }}>
+                                        <MUIcard cardcolor={[props.backgroundColour]}/>
+                                        {/*This is what is used for the cards at the buttom*/}
+                                    </Box>
+                                </Grid>
+                            )
+                        })}
+                    </Grid>
+                </Box>
+                {/*Footer */}
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: props.backgroundColour, height: "10vh", margin: "0%", margintTop: "0%", border: "1px solid black", borderRadius: "0vw"}}>
+                    <Container maxWidth="lg">
+                        <Grid container direction="column" alignItems="center">
+                            <Grid item xs={12}>
+                                <Typography color="black" variant="h5">
+                                    RNA NEWS
+                                </Typography>
                             </Grid>
-                        </Box>
-                    </Stack>
-                    ) : null
-                }
-            {/*</ThemeProvider>*/}
+                        <Grid item xs={12}>
+                        <Typography color="textSecondary" variant="subtitle1">
+                            {`${new Date().getFullYear()} | Help | About Us | Contact Us`}
+                        </Typography>
+                            </Grid>
+                        </Grid>
+                    </Container>
+                </Box>
+            </ThemeProvider>
         </>
     )
 }
