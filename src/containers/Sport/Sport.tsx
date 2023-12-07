@@ -9,7 +9,7 @@ const Sport = () => {
   React.useEffect(() => {
     async function getNews() {
       try {
-        const news: { data?: { results?: any[] } } = await httpGet(`/news/sports`);
+        const news: { data?: { results?: any[] } } = await httpGet(`/news/sport`);
         return news.data.results || [];
       } catch (error) {
         console.error("Error fetching news:", error);

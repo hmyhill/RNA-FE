@@ -16,8 +16,9 @@ interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 // the button that can be expanded
-interface CardColorProps {
+interface CardProps {
     cardcolor: string[];
+    story: any
 }
 // used to store the colour changes of the like button
 
@@ -33,7 +34,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 //code documents how expand button works
 
-export default function MUICard(props: CardColorProps) {
+export default function MUICard(props: CardProps) {
   const [expanded, setExpanded] = React.useState(false);
 
     const [isClicked, setIsClicked] = React.useState(false);
@@ -56,17 +57,14 @@ export default function MUICard(props: CardColorProps) {
     <Card style={{backgroundColor: String(props.cardcolor) ,border: '1px solid black'}}>
         <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-            {/*HEADER Change this to change header*/}
-
-        Boris Johnson Covid Inquiry – live: Ex-PM to face second day’s grilling amid anger from families
-
+            {props.story?.title}
         </Typography>
       </CardContent>
       <CardMedia
         component="img"
         alt="Image Not Found"
-        height="140"
-        image="/static/images/cards/contemplative-reptile.jpg"
+        height="auto"
+        image={props.story?.image_url}
       />
 <CardContent>
         <Typography variant="body2" color="text.secondary">
@@ -97,12 +95,7 @@ export default function MUICard(props: CardColorProps) {
           <Typography paragraph>More on this story:</Typography>
           <Typography paragraph>
             {/*AFTER read more text*/}
-          Boris Johnson is to face a second day of grilling at the covid inquiry on Thursday.
-The former prime minister will return to the hearing having been booed by crowds of bereaved families on Wednesday.
-During his first day of testimony, Mr Johnson’s apology to the nation was interrupted by four people who staged a protest in the hearing room.
-Mr Johnson arrived three hours early on Wednesday morning to dodge the protesters waiting outside. During the day he admitted the pandemic’s impact on the NHS had “bewildered” him. He also acknowledged the government’s policy appeared “incoherent” on the timing of actions in light of the graph in March 2020 suggesting the NHS could be overwhelmed.
-Mr Johnson stumbled over his words as the inquiry heard he lost 5,000 WhatsApp messages between January 2020 and June 2020.
-He also implied the mad cow disease crisis in Britain made him sceptical of the threat of coronavirus as it “wasn’t nearly as fatal as people had originally believed”.
+            {props.story?.content}
           </Typography>
         </CardContent>
       </Collapse>

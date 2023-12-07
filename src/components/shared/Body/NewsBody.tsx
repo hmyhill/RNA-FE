@@ -1,8 +1,8 @@
 import {
     Box,
+    CardMedia,
     Container,
     Grid,
-    Stack,
     Typography
 } from "@mui/material";
 import { 
@@ -28,8 +28,6 @@ export default function Body(props: BodyProps){
           ].join(','),
         },});
     theme = responsiveFontSizes(theme);
-    //Added A new News font to News body pages, if you want to change this
-        //or add additional fonts switch out font in the typeography square brackets[]
 
     const nav = () => {
         const url = props.newsStories[0]?.link; 
@@ -51,9 +49,21 @@ export default function Body(props: BodyProps){
                             <Typography variant={"h6"}> {props.newsStories[0]?.title} </Typography>
                         </Box>
 
-                        <Box sx={{ backgroundColor: props.backgroundColour, height: "75%", marginBottom: "0.25%", border: "2px solid black", overflow: "hidden"}}>
-                            <Typography variant={"body"}> {props.newsStories[0]?.content} </Typography>
-                        </Box>
+                        <div style = {{ display: "flex", height: "75%" }}>
+                            <Box sx={{ backgroundColor: props.backgroundColour, width: "38%",  marginBottom: "0.25%", marginRight: "0.5%", border: "1px solid black"}}>
+                                <CardMedia
+                                    component="img"
+                                    alt="Image Not Found"
+                                    height="100%"
+                                    image={props.newsStories[0]?.image_url}
+                                />
+                            </Box>
+                            <Box sx={{ backgroundColor: props.backgroundColour, width: "62%", marginBottom: "0.25%", border: "2px solid black", overflow: "hidden"}}>
+                                <Typography variant={"body"}> {props.newsStories[0]?.content} </Typography>
+                            </Box>
+                        </div>
+
+                        
 
                         <Box sx={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: props.backgroundColour, height: "10%", border: "2px solid black", borderBottomRightRadius: "1vw", borderBottomLeftRadius: "1vw"}} onClick={nav}>
                             <Typography variant={"body"}> Click Here For Full Story </Typography>
@@ -81,12 +91,12 @@ export default function Body(props: BodyProps){
 
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container columns= {12} rowSpacing={1} columnSpacing={2} margin="0px" width="100%">
-                        {minorStories.map((story, index) => {
+                        {minorStories.map((story) => {
                             return (
                                 <Grid item xs={12} sm={6} md={4} sx={{ padding: "0 !important" }} style={{overflow: 'auto'}}>
                                     {/*added auto overflow for side scrolling*/}
                                     <Box sx={{ backgroundColor: props.backgroundColour, margin: "5%" }}>
-                                        <MUIcard cardcolor={[props.backgroundColour]}/>
+                                        <MUIcard story={story} cardcolor={[props.backgroundColour]}/>
                                         {/*This is what is used for the cards at the buttom*/}
                                     </Box>
                                 </Grid>
