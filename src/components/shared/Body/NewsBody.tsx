@@ -31,28 +31,33 @@ export default function Body(props: BodyProps){
 
     /* NEED TO ADD REQUEST TO GET STORIES RELEVANT TO PAGE NAME */
 
-    let data: string[] = ["Story 1.", "Story 2.", "Story 3."]
-    
-    //You can place variables with the news paper details in the story 1 -3 sections.
+    const nav = () => {
+        const url = props.newsStories[0]?.link; 
+
+        if (url) {
+            window.open(url, '_blank');
+        }
+    }
+
+    const minorStories = props.newsStories.slice(1);
 
     return (
         <>
-            <TickerComponent data={data} />
-            <ThemeProvider theme = {theme}>
-            <Box id="MainStoryWide" sx = {{ display: { xs: "none", sm: "flex" }, margin: "2%", height: {sm: "35vh", md:"45vh" }, color: "black" }}>
-                    <div style = {{ display: "flex", flexDirection: "column", width: "100%" }}>
-                        <Box sx={{ backgroundColor: props.backgroundColour, height: "14%", marginBottom: "1%", border: "1px solid black", borderRadius: "1vw"}}>
-                            <Typography variant={"h4"}> Headline Goes Here </Typography>
+            <TickerComponent data={props.newsStories.map(story => story.title)} />
+            {/*<ThemeProvider theme = {theme}>*/}
+                <Box id="MainStoryWide" sx = {{ display: { xs: "none", sm: "flex" }, margin: "2%", height: "40vh", color: "black" }}>
+                    <div style = {{ display: "flex", flexDirection: "column", width: "100%" }} >
+                        <Box sx={{ backgroundColor: props.backgroundColour, height: "11%", marginBottom: "0.25%", border: "2px solid black", borderTopRightRadius: "1vw", borderTopLeftRadius: "1vw", overflow: "hidden"}}>
+                            <Typography variant={"h6"}> {props.newsStories[0]?.title} </Typography>
                         </Box>
-                        
-                        <div style = {{ display: "flex", height: "85%" }}>
-                            <Box sx={{ backgroundColor: props.backgroundColour, width: "38%", marginRight: "2%", border: "1px solid black", borderRadius: "0.3vw"}}>
-                                <Typography variant={"h6"}> Image Goes Here </Typography>
-                            </Box>
-                            <Box sx={{ backgroundColor: props.backgroundColour, width: "60%", border: "1px solid black", borderRadius: "0.3vw"}}>
-                                <Typography variant={"h6"}> Article Goes Here </Typography>
-                            </Box>
-                        </div>
+
+                        <Box sx={{ backgroundColor: props.backgroundColour, height: "75%", marginBottom: "0.25%", border: "2px solid black", overflow: "hidden"}}>
+                            <Typography variant={"body"}> {props.newsStories[0]?.content} </Typography>
+                        </Box>
+
+                        <Box sx={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: props.backgroundColour, height: "10%", border: "2px solid black", borderBottomRightRadius: "1vw", borderBottomLeftRadius: "1vw"}} onClick={nav}>
+                            <Typography variant={"body"}> Click Here For Full Story </Typography>
+                        </Box>
                     </div>
                 </Box>
 
