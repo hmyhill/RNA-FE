@@ -27,8 +27,8 @@ const Tech = () => {
 
   return (
     <>
-      <Navbar pageName={"tech"} backgroundColour={"#0400BD"}/>
-      <NewsBody pageName={"Tech"} newsStories={requestData} backgroundColour={"rgba(4, 0, 189, 0.25)" } />
+      <Navbar pageName={"tech"} backgroundColour={"#009688"}/>
+      <NewsBody pageName={"Tech"} newsStories={requestData} backgroundColour={"#e0f2f1" } />
     </>
   );
 };

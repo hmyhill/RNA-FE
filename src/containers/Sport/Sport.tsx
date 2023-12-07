@@ -27,8 +27,8 @@ const Sport = () => {
 
   return (
     <>
-      <Navbar pageName={"sport"} backgroundColour={"#FF7A00"} />
-      <NewsBody pageName={"Sports"} newsStories={requestData} backgroundColour={"rgba(255, 122, 0, 0.25)" } />
+      <Navbar pageName={"sport"} backgroundColour={"#ff9800"} />
+      <NewsBody pageName={"Sports"} newsStories={requestData} backgroundColour={"#fff3e0" } />
     </>
   );
 };
