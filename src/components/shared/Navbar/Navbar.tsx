@@ -132,7 +132,7 @@ export default function Navbar(props: NavbarProps) {
             </Button>
 
             <Button
-              onClick={() => navigate("/gaming")}
+              onClick={() => navigate("/entertainment")}
               sx={{
                 flexDirection: "column",
                 textTransform: "none",
@@ -140,7 +140,7 @@ export default function Navbar(props: NavbarProps) {
               }}
             >
               <SportsEsports fontSize="large" />
-              <Typography sx={{ textAlign: "center" }}>Gaming</Typography>
+              <Typography sx={{ textAlign: "center" }}>Entertainment</Typography>
             </Button>
 
             <Button
@@ -370,8 +370,8 @@ export default function Navbar(props: NavbarProps) {
               </MenuItem>
 
               <MenuItem
-                key="gaming"
-                onClick={() => navigate("/gaming")}
+                key="entertainment"
+                onClick={() => navigate("/entertainment")}
                 sx={{
                   backgroundColor: "#0E7A0D",
                   color: "#fff",
@@ -395,7 +395,7 @@ export default function Navbar(props: NavbarProps) {
                       marginLeft={"5px"}
                     >
                       {" "}
-                      Gaming{" "}
+                      Entertainment{" "}
                     </Typography>
                   </div>
                 </div>
