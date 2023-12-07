@@ -110,6 +110,7 @@ export default function Navbar(props: NavbarProps) {
           <Typography variant="h2">NEWS</Typography>
           </Button>
           </Box>
+          {/* Large News button at the top just to take up some empty space */}
 
           <Box
             sx={{
