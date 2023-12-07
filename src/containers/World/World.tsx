@@ -5,7 +5,7 @@ const World = () => {
   return (
     <>
       <Navbar pageName={"world"} backgroundColour={"#f44336"}/>
-      <NewsBody pageName={"Global"} backgroundColour={"#ffebee" } />
+      <NewsBody pageName={"Global"} newsStories={requestData} backgroundColour={"#ffebee" } />
     </>
   );
 };

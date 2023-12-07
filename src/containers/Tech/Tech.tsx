@@ -5,7 +5,7 @@ const Tech = () => {
   return (
     <>
       <Navbar pageName={"tech"} backgroundColour={"#009688"}/>
-      <NewsBody pageName={"Tech"} backgroundColour={"#e0f2f1" } />
+      <NewsBody pageName={"Tech"} newsStories={requestData} backgroundColour={"#e0f2f1" } />
     </>
   );
 };

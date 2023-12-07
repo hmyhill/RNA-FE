@@ -5,7 +5,7 @@ const OurNews = () => {
   return (
     <>
       <Navbar pageName={"ourNews"} backgroundColour={"#9c27b0"} />
-      <NewsBody pageName={"RNA"} backgroundColour={"#f3e5f5" } />
+      <NewsBody pageName={"RNA"} newsStories={requestData} backgroundColour={"#f3e5f5" } />
     </>
   );
 };

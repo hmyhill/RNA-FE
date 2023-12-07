@@ -5,7 +5,7 @@ const Entertainment = () => {
   return (
     <>
       <Navbar pageName={"entertainment"} backgroundColour={"#4caf50"}/>
-      <NewsBody pageName={"Entertainment"} backgroundColour={"#e8f5e9" } />
+      <NewsBody pageName={"Entertainment"} newsStories={requestData} backgroundColour={"#e8f5e9" } />
     </>
   );
 };
