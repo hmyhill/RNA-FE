@@ -40,7 +40,7 @@ const Login = () => {
       if (validateForm()) {
         //TODO: Add API request to backend for login and error handling for error being rejected
         //Login user
-        userState.login("standard", "mockEmail", "mockUsername", 1);
+        userState.login(emailInput, passwordInput);
         //Then navigate to homepage
         navigate("world");
       }
@@ -59,7 +59,7 @@ const Login = () => {
       if (validateForm()) {
         //TODO: Add API request to backend for signup and error handling for error being rejected
         //After user signup is successful, execute login logic to update user context with relevant information
-        userState.login("standard", "mockEmail", "mockUsername", 1);
+        userState.signup(emailInput, passwordInput);
         //Then navigate to world page
         navigate("world");
       }
@@ -86,6 +86,14 @@ const Login = () => {
       setBadDetails({
         problem: true,
         description: "You must complete all fields",
+      });
+    }
+
+    if (formMode === "signup" && passwordInput !== confirmPasswordInput) {
+      valid = false;
+      setBadDetails({
+        problem: true,
+        description: "Your passwords must match",
       });
     }
 
@@ -204,13 +212,13 @@ const Login = () => {
               height: "100%",
               justifyContent: "right",
               px: "0",
-              py: "4px"
+              py: "4px",
             }}
           >
             {/* On button press, handleLogin function is called */}
             {/* Button variant changes depending on the screen mode */}
             <Button
-              color = "success"
+              color="success"
               variant={formMode === "login" ? "contained" : "outlined"}
               onClick={handleLogin}
             >

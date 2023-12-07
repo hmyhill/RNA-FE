@@ -56,7 +56,7 @@ export default function Navbar(props: NavbarProps) {
       {debug && (
         <button
           onClick={() => {
-            userState.login("standard", "mockEmail", "mockUsername", 1);
+            userState.login("admin", "letmein");
           }}
         >
           Standard
@@ -65,7 +65,7 @@ export default function Navbar(props: NavbarProps) {
       {debug && (
         <button
           onClick={() => {
-            userState.login("admin", "mockEmail", "mockUsername", 1);
+            userState.login("admin", "letmein");
           }}
         >
           Admin
@@ -103,12 +103,16 @@ export default function Navbar(props: NavbarProps) {
           </Link>
 
           <Box>
-          <Button
-              onClick={() => navigate("/world")} 
-              sx={{flexDirection: "column", textTransform: "none", color: "#fff"}} 
+            <Button
+              onClick={() => navigate("/world")}
+              sx={{
+                flexDirection: "column",
+                textTransform: "none",
+                color: "#fff",
+              }}
             >
-          <Typography variant="h2">NEWS</Typography>
-          </Button>
+              <Typography variant="h2">NEWS</Typography>
+            </Button>
           </Box>
           {/* Large News button at the top just to take up some empty space */}
 
@@ -140,7 +144,9 @@ export default function Navbar(props: NavbarProps) {
               }}
             >
               <LiveTv fontSize="large" />
-              <Typography sx={{ textAlign: "center" }}>Entertainment</Typography>
+              <Typography sx={{ textAlign: "center" }}>
+                Entertainment
+              </Typography>
             </Button>
 
             <Button

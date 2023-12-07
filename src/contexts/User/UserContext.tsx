@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { userStatuses } from "./types/userStatuses";
+import { httpGet } from "../../utils/api.utils";
 
 //Declare the interface for the user context
 interface IUserContext {
@@ -15,12 +16,8 @@ interface IUserContext {
   username: string | null;
   onStartup: () => void;
   logout: () => void;
-  login: (
-    userStatus: userStatuses,
-    userEmail: string,
-    username: string,
-    userID: number
-  ) => void;
+  login: (email: string, password: string) => void;
+  signup: (email: string, password: string) => void;
 }
 
 //Create the UserContext, assigning fully null values by default (other than userStatus which takes logged out by default)
@@ -32,6 +29,7 @@ export const UserContext = createContext<IUserContext>({
   onStartup: () => {},
   logout: () => {},
   login: () => {},
+  signup: () => {},
 });
 
 //Create the UserContextProvider function, this can be utilised as a contect provider with specific instances of the functions, etc
@@ -54,21 +52,14 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   //Ensure relevant accesses are granted on login
-  const login = useCallback(
-    (
-      userStatus: userStatuses,
-      userEmail: string,
-      username: string,
-      userID: number
-    ) => {
-      //TODO: On login, ensure JWT is generated and stored in appropriate location
-      setUserID(userID);
-      setUserStatus(userStatus);
-      setUserEmail(userEmail);
-      setUsername(username);
-    },
-    []
-  );
+  const login = useCallback(async (email: string, password: string) => {
+    await httpGet("accounts/login/", {
+      headers: { accept: "*/*" },
+    });
+  }, []);
+
+  //Ensure relevant accesses are granted on login
+  const signup = useCallback((email: string, password: string) => {}, []);
 
   const value = {
     userID,
@@ -77,6 +68,7 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
     username,
     login,
     logout,
+    signup,
     onStartup,
   };
 
