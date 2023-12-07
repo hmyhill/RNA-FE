@@ -31,9 +31,6 @@ export default function Body(props: BodyProps){
 
     /* NEED TO ADD REQUEST TO GET STORIES RELEVANT TO PAGE NAME */
 
-    const nav = () => {
-        const url = props.newsStories[0]?.link; 
-
         if (url) {
             window.open(url, '_blank');
         }
