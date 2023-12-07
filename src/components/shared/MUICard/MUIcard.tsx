@@ -15,9 +15,11 @@ import { Button } from '@mui/material';
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
+// the button that can be expanded
 interface CardColorProps {
     cardcolor: string[];
 }
+// used to store the colour changes of the like button
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
@@ -29,6 +31,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     duration: theme.transitions.duration.shortest,
   }),
 }));
+//code documents how expand button works
 
 export default function MUICard(props: CardColorProps) {
   const [expanded, setExpanded] = React.useState(false);
@@ -38,10 +41,12 @@ export default function MUICard(props: CardColorProps) {
     const handleClick = () => {
       setIsClicked(!isClicked);
     };
+    // Click handling
   
     const iconStyle = {
       color: isClicked ? '#ef5350' : '#e0e0e0',
     };
+    // button colour changing
 
   const handleExpandClick = () => {
     setExpanded(!expanded);

@@ -1,5 +1,6 @@
 import {
     Box,
+    Container,
     Grid,
     Typography
 } from "@mui/material";
@@ -88,6 +89,23 @@ export default function Body(props: BodyProps){
                             )
                         })}
                     </Grid>
+                </Box>
+                {/*Footer */}
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: props.backgroundColour, height: "10vh", margin: "0%", margintTop: "0%", border: "1px solid black", borderRadius: "0vw"}}>
+                    <Container maxWidth="lg">
+                        <Grid container direction="column" alignItems="center">
+                            <Grid item xs={12}>
+                                <Typography color="black" variant="h5">
+                                    RNA NEWS
+                                </Typography>
+                            </Grid>
+                        <Grid item xs={12}>
+                        <Typography color="textSecondary" variant="subtitle1">
+                            {`${new Date().getFullYear()} | Help | About Us | Contact Us`}
+                        </Typography>
+                            </Grid>
+                        </Grid>
+                    </Container>
                 </Box>
             </ThemeProvider>
         </>
