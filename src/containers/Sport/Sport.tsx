@@ -4,8 +4,8 @@ import NewsBody from "../../components/shared/Body/NewsBody";
 const Sport = () => {
   return (
     <>
-      <Navbar pageName={"sport"} backgroundColour={"#FF7A00"} />
-      <NewsBody pageName={"Sports"} backgroundColour={"rgba(255, 122, 0, 0.25)" } />
+      <Navbar pageName={"sport"} backgroundColour={"#ff9800"} />
+      <NewsBody pageName={"Sports"} backgroundColour={"#fff3e0" } />
     </>
   );
 };

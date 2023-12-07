@@ -4,8 +4,8 @@ import NewsBody from "../../components/shared/Body/NewsBody";
 const World = () => {
   return (
     <>
-      <Navbar pageName={"world"} backgroundColour={"#e90000"}/>
-      <NewsBody pageName={"Global"} backgroundColour={"rgba(233, 0, 0, 0.25)" } />
+      <Navbar pageName={"world"} backgroundColour={"#f44336"}/>
+      <NewsBody pageName={"Global"} backgroundColour={"#ffebee" } />
     </>
   );
 };
