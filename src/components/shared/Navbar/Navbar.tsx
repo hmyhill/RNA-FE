@@ -1,11 +1,11 @@
 import {
   AccountCircle,
   BadgeOutlined,
+  LiveTv,
   Logout,
   MenuOutlined,
   Newspaper,
   Public,
-  SportsEsports,
   SportsBasketball,
   Terminal,
   Upload,
@@ -139,7 +139,7 @@ export default function Navbar(props: NavbarProps) {
                 color: "#fff",
               }}
             >
-              <SportsEsports fontSize="large" />
+              <LiveTv fontSize="large" />
               <Typography sx={{ textAlign: "center" }}>Entertainment</Typography>
             </Button>
 
@@ -383,7 +383,7 @@ export default function Navbar(props: NavbarProps) {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  <SportsEsports
+                  <LiveTv
                     sx={{
                       fontSize: "40px",
                     }}
@@ -394,8 +394,7 @@ export default function Navbar(props: NavbarProps) {
                       textAlign="center"
                       marginLeft={"5px"}
                     >
-                      {" "}
-                      Entertainment{" "}
+                      Entertainment
                     </Typography>
                   </div>
                 </div>
