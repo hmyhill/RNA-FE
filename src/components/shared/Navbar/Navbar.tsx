@@ -98,7 +98,7 @@ export default function Navbar(props: NavbarProps) {
               id="logo"
               alt="RNA Logo"
               src={"/Logo512.png"}
-              sx={{ height: "8vh", width: "auto" }}
+              sx={{ height: "7vh", width: "auto" }}
             />
           </Link>
 

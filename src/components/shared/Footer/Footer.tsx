@@ -33,10 +33,10 @@ export default function Footer(props: FooterProps){
                             RNA NEWS
                         </Typography>
                     </Grid>
-                <Grid item xs={12}>
-                <Typography color="textSecondary" variant="subtitle1">
-                    {`${new Date().getFullYear()} | Help | About Us | Contact Us`}
-                </Typography>
+                    <Grid item xs={12}>
+                        <Typography color="textSecondary" variant="subtitle1">
+                            {`${new Date().getFullYear()} | Help | About Us | Contact Us`}
+                        </Typography>
                     </Grid>
                 </Grid>
             </Container>

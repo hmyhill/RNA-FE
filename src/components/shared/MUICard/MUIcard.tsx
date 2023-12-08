@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
@@ -10,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Button } from '@mui/material';
 import { 
   createTheme,
   ThemeProvider,
@@ -22,7 +20,7 @@ interface ExpandMoreProps extends IconButtonProps {
 }
 // the button that can be expanded
 interface CardProps {
-    cardcolor: string[];
+    cardColour: string[];
     story: any
 }
 
@@ -49,7 +47,7 @@ export default function MUICard(props: CardProps) {
           'DM Serif Display',
         ].join(','),
       },});
-    theme = responsiveFontSizes(theme);
+    const responsiveTheme = responsiveFontSizes(theme);
   
     const handleClick = () => {
       setIsClicked(!isClicked);
@@ -71,22 +69,30 @@ export default function MUICard(props: CardProps) {
       // Return the original string if its length is less than or equal to the maximum length
       return str;
     }
-    const lastSpaceIndex = str.lastIndexOf(' ', maxLength);
-    let newString = ""
-  
-    if (lastSpaceIndex !== -1) {
-      newString = str.slice(0, lastSpaceIndex);
-    } else {
-      newString = str.slice(0, maxLength);
+
+    // Find the index of the last sentence-ending punctuation mark before the maximum length
+    const lastSentenceIndex = Math.max(
+      str.lastIndexOf('.', maxLength),
+      str.lastIndexOf('?', maxLength),
+      str.lastIndexOf('!', maxLength)
+    )
+
+    if (lastSentenceIndex !== -1 && lastSentenceIndex < maxLength) {
+      // Display all characters before the last sentence-ending punctuation mark within the maximum length
+      const result = str.slice(0, lastSentenceIndex + 1);
+      return result;
     }
-    return newString.split(/[\?\.\!]/)[0]
+
+    // If no sentence-ending punctuation mark is found or the index is beyond the maximum length, cut the string to the last full word before the maximum length
+    const lastSpaceIndex = str.lastIndexOf(' ', maxLength);
+    return lastSpaceIndex !== -1 ? str.slice(0, lastSpaceIndex) : str.slice(0, maxLength);
   }
 
   return (
-    <ThemeProvider theme = {theme}>
-      <Card style={{backgroundColor: String(props.cardcolor) ,border: '1px solid black'}}>
+    <ThemeProvider theme = {responsiveTheme}>
+      <Card style={{backgroundColor: String(props.cardColour) , border: '1px solid black'}}>
         <CardContent>
-          <Typography variant="h6" height = "110px">
+          <Typography variant="h6" height = "80px" lineHeight = "1">
               {props.story?.title}
           </Typography>
         </CardContent>
@@ -100,32 +106,47 @@ export default function MUICard(props: CardProps) {
           }}
         />
         <CardContent>
-          <Typography variant="body2" color="text.secondary" height="95px">
+          <Typography variant="body2" color="text.secondary" height="85px">
               {/*Before read more text*/}
               {cutStringToLastWord(props.story?.content, 175)}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
+          <Typography variant="body2" pr="8px"> Views: 1.7k</Typography>
           <IconButton onClick={handleClick} style={iconStyle} aria-label="add to favorites">
             <FavoriteIcon />
           </IconButton>
           <IconButton aria-label="share">
             <ShareIcon />
           </IconButton>
-          <Button size="small">VIEWS: 1.7k</Button>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
+
+          {expanded ? (
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </ExpandMore>
+          ) : (
+            <>
+              <Typography variant="body2" marginLeft="auto" textAlign="right"> Read Full Story </Typography> 
+              <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+                marginLeft="auto"
+              >
+                <ExpandMoreIcon />
+              </ExpandMore>
+            </>
+          )}
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>More on this story:</Typography>
-            <Typography paragraph>
+            <Typography paragraph lineHeight="1.2" m="0">
               {/*AFTER read more text*/}
               {props.story?.content}
             </Typography>
