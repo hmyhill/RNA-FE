@@ -98,17 +98,9 @@ export default function Navbar(props: NavbarProps) {
               id="logo"
               alt="RNA Logo"
               src={"/Logo512.png"}
-              sx={{ height: "10vh", width: "auto" }}
+              sx={{ height: "8vh", width: "auto" }}
             />
           </Link>
-
-          <Box>
-          <Button
-              onClick={() => navigate("/world")} 
-              sx={{flexDirection: "column", textTransform: "none", color: "#fff"}} 
-            >
-          </Button>
-          </Box>
 
           <Box
             sx={{
@@ -182,7 +174,7 @@ export default function Navbar(props: NavbarProps) {
           <Box sx={{ marginLeft: "auto", display: { xs: "none", sm: "flex" } }}>
             <Tooltip title="View User Options">
               <IconButton onClick={() => setOpen(!open)}>
-                <AccountCircle sx={{ color: "#fff", fontSize: "7vh" }} />
+                <AccountCircle sx={{ color: "#fff", fontSize: "8vh" }} />
               </IconButton>
             </Tooltip>
             <Menu

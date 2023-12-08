@@ -1,5 +1,6 @@
 import Navbar from "../../components/shared/Navbar/Navbar";
 import NewsBody from "../../components/shared/Body/NewsBody";
+import Footer from "../../components/shared/Footer/Footer";
 import React from "react"
 import { httpGet } from "../../utils/api.utils";
 
@@ -29,6 +30,7 @@ const Entertainment = () => {
     <>
       <Navbar pageName={"entertainment"} backgroundColour={"#4caf50"}/>
       <NewsBody pageName={"Entertainment"} newsStories={requestData} backgroundColour={"#e8f5e9" } />
+      <Footer backgroundColour={"#e8f5e9"} />
     </>
   );
 };
