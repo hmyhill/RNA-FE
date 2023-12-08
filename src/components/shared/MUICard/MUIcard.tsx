@@ -112,7 +112,7 @@ export default function MUICard(props: CardProps) {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <Typography variant="body2" pr="8px"> Views: 1.7k</Typography>
+          <Typography variant="body2" pr="8px" textAlign="center"> 1.7k Views</Typography>
           <IconButton onClick={handleClick} style={iconStyle} aria-label="add to favorites">
             <FavoriteIcon />
           </IconButton>
@@ -137,7 +137,7 @@ export default function MUICard(props: CardProps) {
                 onClick={handleExpandClick}
                 aria-expanded={expanded}
                 aria-label="show more"
-                marginLeft="auto"
+                marginLeft="0"
               >
                 <ExpandMoreIcon />
               </ExpandMore>

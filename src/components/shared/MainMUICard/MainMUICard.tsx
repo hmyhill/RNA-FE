@@ -24,8 +24,8 @@ interface ExpandMoreProps extends IconButtonProps {
 }
 // the button that can be expanded
 interface CardProps {
-    cardcolor: string[];
-    //story: any
+    cardColour: string;
+    story: any;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -64,7 +64,7 @@ export default function MainMUICard(props: CardProps) {
           'DM Serif Display',
         ].join(','),
       },});
-    theme = responsiveFontSizes(theme);
+    const responsiveTheme = responsiveFontSizes(theme);
   
     const handleClick = () => {
       setIsClicked(!isClicked);
@@ -80,164 +80,158 @@ export default function MainMUICard(props: CardProps) {
     setExpanded(!expanded);
   };
 
-  //Isolating the first sentence of the article to insert as the preview
   function cutStringToLastWord(str: String, maxLength: number) {
-    if (str.length <= maxLength) {
+    if (str !== undefined && str !== null){
+      if (str.length <= maxLength) {
       // Return the original string if its length is less than or equal to the maximum length
       return str;
-    }
-    const lastSpaceIndex = str.lastIndexOf(' ', maxLength);
-    let newString = ""
+      }
   
-    if (lastSpaceIndex !== -1) {
-      newString = str.slice(0, lastSpaceIndex);
-    } else {
-      newString = str.slice(0, maxLength);
+      // Find the index of the last sentence-ending punctuation mark before the maximum length
+      const lastSentenceIndex = Math.max(
+      str.lastIndexOf('.', maxLength),
+      str.lastIndexOf('?', maxLength),
+      str.lastIndexOf('!', maxLength)
+      )
+  
+      if (lastSentenceIndex !== -1 && lastSentenceIndex < maxLength) {
+      // Display all characters before the last sentence-ending punctuation mark within the maximum length
+      const result = str.slice(0, lastSentenceIndex + 1);
+      return result;
+      }
+  
+      // If no sentence-ending punctuation mark is found or the index is beyond the maximum length, cut the string to the last full word before the maximum length
+      const lastSpaceIndex = str.lastIndexOf(' ', maxLength);
+      return lastSpaceIndex !== -1 ? str.slice(0, lastSpaceIndex) : str.slice(0, maxLength);
     }
-    return newString.split(/[\?\.\!]/)[0]
   }
+  
   //Modal
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
-    <ThemeProvider theme = {theme}>
-      <Card style={{backgroundColor: String(props.cardcolor) ,border: '1px solid black'}}>
+    <ThemeProvider theme = {responsiveTheme}>
+      <Card style={{backgroundColor: String(props.cardColour) , margin: "2%", border: '1px solid black'}}>
         <CardContent>
-          <Typography variant="h6">
-            Inside 'tinseltown' - where it's Christmas all year round
-              {/*props.story?.title*/}
+          <Typography variant="h6" height = "80px" lineHeight = "1">
+            {props.story?.title}
           </Typography>
         </CardContent>
         {/*Dividers are the little lines between, delete them if they are not working*/}
         <Divider variant="middle" />
-        {/*remove this typography later its for the image so i know where it is. The typeography below*/}
-        <Box display="flex" flexDirection="row">
-          <Typography variant="h6">
-              IMAGE GOES HERE
-          </Typography>
-        {/*<img
-          src=
-          alt="Image Not Found"
-          style={{
-            width: "100%",
-            height: '225px',
-            objectFit: 'fill',
-          }}
-        />
-        */}
-        <Divider orientation="vertical" variant="middle"/>
-        
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-              {/*Before read more text*/}
-              Festive Productions Ltd is one of the UK's biggest Christmas decoration suppliers. Sky News visited its base in Cwmbran, South Wales.
-              With the Christmas season in full swing, the country is lit up by decorations and illuminations.
 
-But there's one Welsh town where it's Christmas all year round.
-
-Festive Productions Ltd is one of the biggest suppliers of Christmas decorations in the UK.
-
-Sky News visited its base in Cwmbran, south Wales, which is located on a site measuring 250,000 square feet.
-
-Its distribution office here has over 16,000 pallet spaces, and its showroom for Christmas 2024 has already opened.
-
-No corner of the showroom is left undecorated, as baubles and bells, tinsel and trees span several rooms.
-
-Each room is intricately decorated to fit a different theme, from candy cane colours to a winter wonderland extravaganza.
-              {/*
-              {cutStringToLastWord(props.story?.content, 175)}
-              */}
-          </Typography>
-        </CardContent>
+        <Box display="flex" sx = {{ flexDirection: {xs:"column", sm: "row" }, alignItems: { xs: "center", sm: "flex-start"} }}>  
+          <img
+            src= {props.story?.image_url}
+            alt="Image Not Found"
+            style={{
+              maxHeight: '225px',
+              objectFit: 'scale-down',
+            }}
+          />
+          <Divider orientation="vertical" variant="middle"/>
+          
+          <CardContent p="0" width="70%">
+            <Box sx={{ backgroundColor: props.cardColour, display: {xs: "flex", md: "none"}}}>
+                <Typography variant={"body1"} lineHeight="1.2"> {cutStringToLastWord(props.story?.content, 500)} </Typography>
+            </Box>
+            <Box sx={{ backgroundColor: props.cardColour, display: {xs: "none", md: "flex", lg: "none"}}}>
+                <Typography variant={"body1"} lineHeight="1.2"> {cutStringToLastWord(props.story?.content, 700)} </Typography>
+            </Box>
+            <Box sx={{ backgroundColor: props.cardColour, display: {xs: "none", lg: "flex", xl: "none"}}}>
+                <Typography variant={"body1"} lineHeight="1.2"> {cutStringToLastWord(props.story?.content, 1000)} </Typography>
+            </Box>
+            <Box sx={{ backgroundColor: props.cardColour, display: {xs: "none", xl:"flex"}}}>
+                <Typography variant={"body1"} lineHeight="1.2"> {cutStringToLastWord(props.story?.content, 1400)} </Typography>
+            </Box>
+          </CardContent>
         </Box>
+
         <Divider variant="middle" />
+
         <CardActions disableSpacing>
+          <Typography variant="body2" pr="8px" textAlign="center"> 1.7k Views</Typography>
           <IconButton onClick={handleClick} style={iconStyle} aria-label="add to favorites">
             <FavoriteIcon />
           </IconButton>
           <IconButton aria-label="share">
             <ShareIcon onClick={handleOpen}/>
             <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Share:
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              <IconButton>
-                <Facebook sx={{ color: blue[500]}}/>
-              </IconButton>
-              <IconButton>
-              <WhatsApp sx={{ color: green[500]}}/>
-              </IconButton>
-              <IconButton>
-              <Email sx={{ color: red[500]}}/>
-              </IconButton>
-              <IconButton>
-              <Instagram sx={{ color: purple[500]}}/>
-              </IconButton>
-              <IconButton>
-              <Twitter sx={{ color: blue[200]}}/>
-              </IconButton>
-            </Typography>
-            <IconButton>
-                {/*Add actual URL here*/}
-              URL:
-              </IconButton>
-          </Box>
-        </Fade>
-      </Modal>
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              open={open}
+              onClose={handleClose}
+              closeAfterTransition
+              slots={{ backdrop: Backdrop }}
+              slotProps={{
+                backdrop: {
+                  timeout: 500,
+                },
+              }}
+            >
+              <Fade in={open}>
+                <Box sx={style}>
+                  <Typography id="transition-modal-title" variant="h6" component="h2">
+                    Share:
+                  </Typography>
+                  <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+                    <IconButton>
+                      <Facebook sx={{ color: blue[500]}}/>
+                    </IconButton>
+                    <IconButton>
+                    <WhatsApp sx={{ color: green[500]}}/>
+                    </IconButton>
+                    <IconButton>
+                    <Email sx={{ color: red[500]}}/>
+                    </IconButton>
+                    <IconButton>
+                    <Instagram sx={{ color: purple[500]}}/>
+                    </IconButton>
+                    <IconButton>
+                    <Twitter sx={{ color: blue[200]}}/>
+                    </IconButton>
+                  </Typography>
+                  <IconButton>
+                      {/*Add actual URL here*/}
+                    URL:
+                    </IconButton>
+                </Box>
+              </Fade>
+            </Modal>
           </IconButton>
 
-            <Button size="small">VIEWS: 1.7k</Button>
-
-            <Button size="small" sx={{ color: "#111111" }}>Click Here For Full Story</Button>
-
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
+          {expanded ? (
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </ExpandMore>
+          ) : (
+            <>
+              <Typography variant="body2" marginLeft="auto" textAlign="right"> Read Full Story </Typography> 
+              <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+                marginLeft="0"
+              >
+                <ExpandMoreIcon />
+              </ExpandMore>
+            </>
+          )}
         </CardActions>
+
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>More on this story:</Typography>
-            <Typography paragraph>
-            STORY TWO
+            <Typography paragraph lineHeight="1.2" m="0">
               {/*AFTER read more text*/}
-              With the Christmas season in full swing, the country is lit up by decorations and illuminations.
-
-But there's one Welsh town where it's Christmas all year round.
-
-Festive Productions Ltd is one of the biggest suppliers of Christmas decorations in the UK.
-
-Sky News visited its base in Cwmbran, south Wales, which is located on a site measuring 250,000 square feet.
-
-Its distribution office here has over 16,000 pallet spaces, and its showroom for Christmas 2024 has already opened.
-
-No corner of the showroom is left undecorated, as baubles and bells, tinsel and trees span several rooms.
-
-Each room is intricately decorated to fit a different theme, from candy cane colours to a winter wonderland extravaganza.
-              {/*
               {props.story?.content}
-            */}
             </Typography>
           </CardContent>
         </Collapse>
