@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { userStatuses } from "./types/userStatuses";
-import { httpGet } from "../../utils/api.utils";
+import { httpPost } from "../../utils/api.utils";
 
 //Declare the interface for the user context
 interface IUserContext {
@@ -53,8 +53,12 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
 
   //Ensure relevant accesses are granted on login
   const login = useCallback(async (email: string, password: string) => {
-    await httpGet("accounts/login/", {
-      headers: { accept: "*/*" },
+    const formData = new FormData();
+    formData.append("username", email);
+    formData.append("password", password);
+    await httpPost("accounts/login/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
     });
   }, []);
 
