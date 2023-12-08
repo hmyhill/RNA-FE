@@ -62,11 +62,11 @@ export default function Body(props: BodyProps){
                                 />
                             </Box>
                             <Box sx={{ backgroundColor: props.backgroundColour, width: "70%", marginBottom: "0.25%", border: "2px solid black", overflow: "hidden"}}>
-                                <Typography variant={"body"}> {props.newsStories[0]?.content} </Typography>
+                                <Typography variant={"body1"}> {props.newsStories[0]?.content} </Typography>
                             </Box>
                         </div>
                         <Box sx={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: props.backgroundColour, height: "10%", border: "2px solid black", borderBottomRightRadius: "1vw", borderBottomLeftRadius: "1vw"}} onClick={nav}>
-                            <Typography variant={"body"}> Click Here For Full Story </Typography>
+                            <Typography variant={"body1"}> Click Here For Full Story </Typography>
                         </Box>
                     </div>
                 </Box>
@@ -88,12 +88,12 @@ export default function Body(props: BodyProps){
                             />
                         </Box>
                         <Box sx={{ backgroundColor: props.backgroundColour, width: "70%", marginBottom: "0.25%", border: "2px solid black", overflow: "hidden"}}>
-                            <Typography variant={"body"}> {props.newsStories[0]?.content} </Typography>
+                            <Typography variant={"body1"}> {props.newsStories[0]?.content} </Typography>
                         </Box>
                     </div>
 
                     <Box sx={{display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: props.backgroundColour, height: "8%", border: "2px solid black", borderBottomRightRadius: "1vw", borderBottomLeftRadius: "1vw"}} onClick={nav}>
-                        <Typography variant={"body"}> Click Here For Full Story </Typography>
+                        <Typography variant={"body1"}> Click Here For Full Story </Typography>
                     </Box>
                 </Box>
 
