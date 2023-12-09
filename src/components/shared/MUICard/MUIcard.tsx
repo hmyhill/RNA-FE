@@ -1,43 +1,51 @@
-import * as React from 'react';
-import { 
+import * as React from "react";
+import {
   createTheme,
   styled,
   ThemeProvider,
-  responsiveFontSizes 
-} from '@mui/material/styles';
+  responsiveFontSizes,
+} from "@mui/material/styles";
 import {
-  Backdrop, 
-  Box, 
-  Card, 
-  CardActions, 
-  CardContent, 
+  Backdrop,
+  Box,
+  Card,
+  CardActions,
+  CardContent,
   Collapse,
-  Fade, 
+  Fade,
   IconButton,
   IconButtonProps,
   Modal,
   Typography,
-} from '@mui/material';
-import { Email, Facebook, Favorite, Instagram, Share, Twitter, WhatsApp } from '@mui/icons-material';
-import { blue, green, purple, red } from '@mui/material/colors';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+} from "@mui/material";
+import {
+  Email,
+  Facebook,
+  Favorite,
+  Instagram,
+  Share,
+  Twitter,
+  WhatsApp,
+} from "@mui/icons-material";
+import { blue, green, purple, red } from "@mui/material/colors";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 // the button that can be expanded
 interface CardProps {
-    cardColour: string[];
-    story: any
+  cardColour: string[];
+  story: any;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
   }),
 }));
@@ -45,13 +53,13 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 //modal style
 const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: "40vw",
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: "10px",
 };
@@ -59,25 +67,24 @@ const style = {
 export default function MUICard(props: CardProps) {
   const [expanded, setExpanded] = React.useState(false);
 
-    const [isClicked, setIsClicked] = React.useState(false);
-  
-    let theme = createTheme({
-      typography: {
-        fontFamily: [
-          'DM Serif Display',
-        ].join(','),
-      },});
-    const responsiveTheme = responsiveFontSizes(theme);
-  
-    const handleClick = () => {
-      setIsClicked(!isClicked);
-    };
-    // Click handling
-  
-    const iconStyle = {
-      color: isClicked ? '#ef5350' : '#e0e0e0',
-    };
-    // button colour changing
+  const [isClicked, setIsClicked] = React.useState(false);
+
+  let theme = createTheme({
+    typography: {
+      fontFamily: ["DM Serif Display"].join(","),
+    },
+  });
+  const responsiveTheme = responsiveFontSizes(theme);
+
+  const handleClick = () => {
+    setIsClicked(!isClicked);
+  };
+  // Click handling
+
+  const iconStyle = {
+    color: isClicked ? "#ef5350" : "#e0e0e0",
+  };
+  // button colour changing
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -92,10 +99,10 @@ export default function MUICard(props: CardProps) {
 
     // Find the index of the last sentence-ending punctuation mark before the maximum length
     const lastSentenceIndex = Math.max(
-      str.lastIndexOf('.', maxLength),
-      str.lastIndexOf('?', maxLength),
-      str.lastIndexOf('!', maxLength)
-    )
+      str.lastIndexOf(".", maxLength),
+      str.lastIndexOf("?", maxLength),
+      str.lastIndexOf("!", maxLength)
+    );
 
     if (lastSentenceIndex !== -1 && lastSentenceIndex < maxLength) {
       // Display all characters before the last sentence-ending punctuation mark within the maximum length
@@ -104,19 +111,23 @@ export default function MUICard(props: CardProps) {
     }
 
     // If no sentence-ending punctuation mark is found or the index is beyond the maximum length, cut the string to the last full word before the maximum length
-    const lastSpaceIndex = str.lastIndexOf(' ', maxLength);
-    return lastSpaceIndex !== -1 ? str.slice(0, lastSpaceIndex) : str.slice(0, maxLength);
+    const lastSpaceIndex = str.lastIndexOf(" ", maxLength);
+    return lastSpaceIndex !== -1
+      ? str.slice(0, lastSpaceIndex)
+      : str.slice(0, maxLength);
   }
 
   const mailTo = () => {
-    const emailSubject = 'Check Out This Great Story I Found On RNA';
-    const emailBody = `I Found This Article I Thought You Might Like.\n${props.story?.title}\nFind The Full Article Here: ${props.story?.link}`
+    const emailSubject = "Check Out This Great Story I Found On RNA";
+    const emailBody = `I Found This Article I Thought You Might Like.\n${props.story?.title}\nFind The Full Article Here: ${props.story?.link}`;
 
-    const mailtoLink = `mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:?subject=${encodeURIComponent(
+      emailSubject
+    )}&body=${encodeURIComponent(emailBody)}`;
 
     // Open the default email client
     window.location.href = mailtoLink;
-  }
+  };
 
   //Modal
   const [open, setOpen] = React.useState(false);
@@ -124,11 +135,16 @@ export default function MUICard(props: CardProps) {
   const handleClose = () => setOpen(false);
 
   return (
-    <ThemeProvider theme = {responsiveTheme}>
-      <Card style={{backgroundColor: String(props.cardColour) , border: '1px solid black'}}>
+    <ThemeProvider theme={responsiveTheme}>
+      <Card
+        style={{
+          backgroundColor: String(props.cardColour),
+          border: "1px solid black",
+        }}
+      >
         <CardContent>
-          <Typography variant="h6" height = "80px" lineHeight = "1">
-              {props.story?.title}
+          <Typography variant="h6" height="80px" lineHeight="1">
+            {props.story?.title}
           </Typography>
         </CardContent>
         <img
@@ -136,24 +152,30 @@ export default function MUICard(props: CardProps) {
           alt="Image Not Found"
           style={{
             width: "100%",
-            height: '225px',
-            objectFit: 'fill',
+            height: "225px",
+            objectFit: "fill",
           }}
         />
         <CardContent>
           <Typography variant="body2" color="text.secondary" height="85px">
-              {/*Before read more text*/}
-              {cutStringToLastWord(props.story?.content, 175)}
+            {/*Before read more text*/}
+            {cutStringToLastWord(props.story?.content, 175)}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <Typography variant="body2" pr="8px" textAlign="center"> 1.7k Views</Typography>
-          <IconButton onClick={handleClick} style={iconStyle} aria-label="add to favorites">
+          <Typography variant="body2" pr="8px" textAlign="center">
+            {" "}
+            1.7k Views
+          </Typography>
+          <IconButton
+            onClick={handleClick}
+            style={iconStyle}
+            aria-label="add to favorites"
+          >
             <Favorite />
           </IconButton>
           <IconButton aria-label="share">
-
-            <Share onClick={handleOpen}/>
+            <Share onClick={handleOpen} />
             <Modal
               aria-labelledby="transition-modal-title"
               aria-describedby="transition-modal-description"
@@ -168,32 +190,41 @@ export default function MUICard(props: CardProps) {
               }}
             >
               <Fade in={open}>
-                <Box sx={style}> 
-                  <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row"} }}>
+                <Box sx={style}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                    }}
+                  >
                     <Typography id="transition-modal-title" variant="h6">
                       Share Story:
                     </Typography>
-                    <Typography id="transition-modal-description" >
-                      <IconButton disableRipple sx= {{padding: "4px"}}>
-                        <Facebook sx={{ p:"0", color: blue[500]}}/>
+                    <Typography id="transition-modal-description">
+                      <IconButton disableRipple sx={{ padding: "4px" }}>
+                        <Facebook sx={{ p: "0", color: blue[500] }} />
                       </IconButton>
-                      <IconButton disableRipple sx= {{padding: "4px"}}>
-                        <WhatsApp sx={{ p:"0", color: green[500]}}/>
+                      <IconButton disableRipple sx={{ padding: "4px" }}>
+                        <WhatsApp sx={{ p: "0", color: green[500] }} />
                       </IconButton>
-                      <IconButton disableRipple sx= {{padding: "4px"}}>
-                        <Instagram sx={{ p:"0", color: purple[500]}}/>
+                      <IconButton disableRipple sx={{ padding: "4px" }}>
+                        <Instagram sx={{ p: "0", color: purple[500] }} />
                       </IconButton>
-                      <IconButton disableRipple sx= {{padding: "4px"}}>
-                        <Twitter sx={{ p:"0", color: blue[300]}}/>
+                      <IconButton disableRipple sx={{ padding: "4px" }}>
+                        <Twitter sx={{ p: "0", color: blue[300] }} />
                       </IconButton>
                     </Typography>
-                  </Box> 
-                  <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row"}, alignItems: "flex-start" }}>
-                    <Typography variant="h6">
-                      Send Via Email:
-                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <Typography variant="h6">Send Via Email:</Typography>
                     <IconButton onClick={mailTo}>
-                      <Email sx={{ color: red[500]}}/>
+                      <Email sx={{ color: red[500] }} />
                     </IconButton>
                   </Box>
                 </Box>
@@ -212,13 +243,16 @@ export default function MUICard(props: CardProps) {
             </ExpandMore>
           ) : (
             <>
-              <Typography variant="body2" marginLeft="auto" textAlign="right"> Read Full Story </Typography> 
+              <Typography variant="body2" marginLeft="auto" textAlign="right">
+                {" "}
+                Read Full Story{" "}
+              </Typography>
               <ExpandMore
                 expand={expanded}
                 onClick={handleExpandClick}
                 aria-expanded={expanded}
                 aria-label="show more"
-                marginLeft="0"
+                sx={{ marginLeft: 0 }}
               >
                 <ExpandMoreIcon />
               </ExpandMore>
