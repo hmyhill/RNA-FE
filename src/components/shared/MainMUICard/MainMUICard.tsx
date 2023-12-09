@@ -1,22 +1,26 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Backdrop, Box, Button, Chip, Divider, Fade, Modal } from '@mui/material';
+import { 
+  Backdrop, 
+  Box, 
+  Card, 
+  CardActions, 
+  CardContent, 
+  Collapse,
+  Divider, 
+  Fade, 
+  IconButton,
+  IconButtonProps,
+  Modal,
+  Typography,
+} from '@mui/material';
 import { 
   createTheme,
+  styled,
   ThemeProvider,
   responsiveFontSizes 
 } from '@mui/material/styles';
-import { Email, Facebook, Instagram, Twitter, WhatsApp } from '@mui/icons-material';
+import { Email, Facebook, Favorite, Instagram, Share, Twitter, WhatsApp } from '@mui/icons-material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { blue, green, purple, red } from '@mui/material/colors';
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -42,39 +46,38 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 //modal style
 const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: "40vw",
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: "10px",
+};
 
 export default function MainMUICard(props: CardProps) {
   const [expanded, setExpanded] = React.useState(false);
+  const [isClicked, setIsClicked] = React.useState(false);
 
-    const [isClicked, setIsClicked] = React.useState(false);
-  
-    let theme = createTheme({
-      typography: {
-        fontFamily: [
-          'DM Serif Display',
-        ].join(','),
-      },});
-    const responsiveTheme = responsiveFontSizes(theme);
-  
-    const handleClick = () => {
-      setIsClicked(!isClicked);
-    };
-    // Click handling
-  
-    const iconStyle = {
-      color: isClicked ? '#ef5350' : '#e0e0e0',
-    };
-    // button colour changing
+  let theme = createTheme({
+    typography: {
+      fontFamily: [
+        'DM Serif Display',
+      ].join(','),
+    },});
+  const responsiveTheme = responsiveFontSizes(theme);
+
+  const handleClick = () => {
+    setIsClicked(!isClicked);
+  };
+  // Click handling
+
+  const iconStyle = {
+    color: isClicked ? '#ef5350' : '#e0e0e0',
+  };
+  // button colour changing
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -111,11 +114,22 @@ export default function MainMUICard(props: CardProps) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+
+  const mailTo = () => {
+    const emailSubject = 'Check Out This Great Story I Found On RNA';
+    const emailBody = `I Found This Article I Thought You Might Like.\n${props.story?.title}\nFind The Full Article Here: ${props.story?.link}`
+
+    const mailtoLink = `mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+    // Open the default email client
+    window.location.href = mailtoLink;
+}
+
   return (
     <ThemeProvider theme = {responsiveTheme}>
       <Card style={{backgroundColor: String(props.cardColour) , margin: "2%", border: '1px solid black'}}>
         <CardContent>
-          <Typography variant="h6" height = "80px" lineHeight = "1">
+          <Typography variant="h6" lineHeight = "1">
             {props.story?.title}
           </Typography>
         </CardContent>
@@ -154,10 +168,10 @@ export default function MainMUICard(props: CardProps) {
         <CardActions disableSpacing>
           <Typography variant="body2" pr="8px" textAlign="center"> 1.7k Views</Typography>
           <IconButton onClick={handleClick} style={iconStyle} aria-label="add to favorites">
-            <FavoriteIcon />
+            <Favorite />
           </IconButton>
           <IconButton aria-label="share">
-            <ShareIcon onClick={handleOpen}/>
+            <Share onClick={handleOpen}/>
             <Modal
               aria-labelledby="transition-modal-title"
               aria-describedby="transition-modal-description"
@@ -172,31 +186,34 @@ export default function MainMUICard(props: CardProps) {
               }}
             >
               <Fade in={open}>
-                <Box sx={style}>
-                  <Typography id="transition-modal-title" variant="h6" component="h2">
-                    Share:
-                  </Typography>
-                  <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-                    <IconButton>
-                      <Facebook sx={{ color: blue[500]}}/>
+                <Box sx={style}> 
+                  <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row"} }}>
+                    <Typography id="transition-modal-title" variant="h6">
+                      Share Story:
+                    </Typography>
+                    <Typography id="transition-modal-description" >
+                      <IconButton disableRipple sx= {{padding: "4px"}}>
+                        <Facebook sx={{ p:"0", color: blue[500]}}/>
+                      </IconButton>
+                      <IconButton disableRipple sx= {{padding: "4px"}}>
+                        <WhatsApp sx={{ p:"0", color: green[500]}}/>
+                      </IconButton>
+                      <IconButton disableRipple sx= {{padding: "4px"}}>
+                        <Instagram sx={{ p:"0", color: purple[500]}}/>
+                      </IconButton>
+                      <IconButton disableRipple sx= {{padding: "4px"}}>
+                        <Twitter sx={{ p:"0", color: blue[300]}}/>
+                      </IconButton>
+                    </Typography>
+                  </Box> 
+                  <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row"}, alignItems: "flex-start" }}>
+                    <Typography variant="h6">
+                      Send Via Email:
+                    </Typography>
+                    <IconButton onClick={mailTo}>
+                      <Email sx={{ color: red[500]}}/>
                     </IconButton>
-                    <IconButton>
-                    <WhatsApp sx={{ color: green[500]}}/>
-                    </IconButton>
-                    <IconButton>
-                    <Email sx={{ color: red[500]}}/>
-                    </IconButton>
-                    <IconButton>
-                    <Instagram sx={{ color: purple[500]}}/>
-                    </IconButton>
-                    <IconButton>
-                    <Twitter sx={{ color: blue[200]}}/>
-                    </IconButton>
-                  </Typography>
-                  <IconButton>
-                      {/*Add actual URL here*/}
-                    URL:
-                    </IconButton>
+                  </Box>
                 </Box>
               </Fade>
             </Modal>
@@ -219,7 +236,7 @@ export default function MainMUICard(props: CardProps) {
                 onClick={handleExpandClick}
                 aria-expanded={expanded}
                 aria-label="show more"
-                marginLeft="0"
+                sx = {{margin: "0 !important"}}
               >
                 <ExpandMoreIcon />
               </ExpandMore>
@@ -229,7 +246,7 @@ export default function MainMUICard(props: CardProps) {
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph lineHeight="1.2" m="0">
+            <Typography paragraph lineHeight="1.2" margin="0">
               {/*AFTER read more text*/}
               {props.story?.content}
             </Typography>

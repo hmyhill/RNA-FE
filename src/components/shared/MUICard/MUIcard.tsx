@@ -1,19 +1,26 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { 
   createTheme,
+  styled,
   ThemeProvider,
   responsiveFontSizes 
 } from '@mui/material/styles';
+import {
+  Backdrop, 
+  Box, 
+  Card, 
+  CardActions, 
+  CardContent, 
+  Collapse,
+  Fade, 
+  IconButton,
+  IconButtonProps,
+  Modal,
+  Typography,
+} from '@mui/material';
+import { Email, Facebook, Favorite, Instagram, Share, Twitter, WhatsApp } from '@mui/icons-material';
+import { blue, green, purple, red } from '@mui/material/colors';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -35,6 +42,19 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 //code documents how expand button works
+
+//modal style
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: "40vw",
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: "10px",
+};
 
 export default function MUICard(props: CardProps) {
   const [expanded, setExpanded] = React.useState(false);
@@ -88,6 +108,21 @@ export default function MUICard(props: CardProps) {
     return lastSpaceIndex !== -1 ? str.slice(0, lastSpaceIndex) : str.slice(0, maxLength);
   }
 
+  const mailTo = () => {
+    const emailSubject = 'Check Out This Great Story I Found On RNA';
+    const emailBody = `I Found This Article I Thought You Might Like.\n${props.story?.title}\nFind The Full Article Here: ${props.story?.link}`
+
+    const mailtoLink = `mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+    // Open the default email client
+    window.location.href = mailtoLink;
+  }
+
+  //Modal
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <ThemeProvider theme = {responsiveTheme}>
       <Card style={{backgroundColor: String(props.cardColour) , border: '1px solid black'}}>
@@ -114,10 +149,56 @@ export default function MUICard(props: CardProps) {
         <CardActions disableSpacing>
           <Typography variant="body2" pr="8px" textAlign="center"> 1.7k Views</Typography>
           <IconButton onClick={handleClick} style={iconStyle} aria-label="add to favorites">
-            <FavoriteIcon />
+            <Favorite />
           </IconButton>
           <IconButton aria-label="share">
-            <ShareIcon />
+
+            <Share onClick={handleOpen}/>
+            <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              open={open}
+              onClose={handleClose}
+              closeAfterTransition
+              slots={{ backdrop: Backdrop }}
+              slotProps={{
+                backdrop: {
+                  timeout: 500,
+                },
+              }}
+            >
+              <Fade in={open}>
+                <Box sx={style}> 
+                  <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row"} }}>
+                    <Typography id="transition-modal-title" variant="h6">
+                      Share Story:
+                    </Typography>
+                    <Typography id="transition-modal-description" >
+                      <IconButton disableRipple sx= {{padding: "4px"}}>
+                        <Facebook sx={{ p:"0", color: blue[500]}}/>
+                      </IconButton>
+                      <IconButton disableRipple sx= {{padding: "4px"}}>
+                        <WhatsApp sx={{ p:"0", color: green[500]}}/>
+                      </IconButton>
+                      <IconButton disableRipple sx= {{padding: "4px"}}>
+                        <Instagram sx={{ p:"0", color: purple[500]}}/>
+                      </IconButton>
+                      <IconButton disableRipple sx= {{padding: "4px"}}>
+                        <Twitter sx={{ p:"0", color: blue[300]}}/>
+                      </IconButton>
+                    </Typography>
+                  </Box> 
+                  <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row"}, alignItems: "flex-start" }}>
+                    <Typography variant="h6">
+                      Send Via Email:
+                    </Typography>
+                    <IconButton onClick={mailTo}>
+                      <Email sx={{ color: red[500]}}/>
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Fade>
+            </Modal>
           </IconButton>
 
           {expanded ? (
