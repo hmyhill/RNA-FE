@@ -9,7 +9,6 @@ interface TickerProps {
 }
 
 export default function TickerComponent(props: TickerProps){
-    
     return (
         <Box sx = {{ backgroundColor: "#eeeeee", color: "black", borderTop: "0.5px solid black", borderBottom: "1px solid black", }}>
             <Marquee autoFill={false} speed={70}>
