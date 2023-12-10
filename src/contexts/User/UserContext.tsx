@@ -50,7 +50,6 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
         headers: { withCredentials: false },
       }
     );
-    console.log("MAKING ON STARTUP REQUEST");
     if (successResponse.headers["content-type"] !== "application/json") {
       setUserStatus("loggedOut");
       setUserID(null);
