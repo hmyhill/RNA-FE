@@ -118,7 +118,39 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   };
 
   //Ensure relevant accesses are granted on login
-  const signup = useCallback((email: string, password: string) => {}, []);
+  const signup = async (email: string, password: string) => {
+    const formData = new FormData();
+    formData.append("username", email);
+    formData.append("email", email);
+    formData.append("password1", password);
+    formData.append("password2", password);
+    await httpPost("/api/login/", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
+    });
+    const successResponse = await httpPost(
+      "/api/login/",
+      {},
+      {
+        headers: { withCredentials: true },
+      }
+    );
+
+    if (successResponse.headers["content-type"] !== "application/json") {
+      logout();
+      throw new Error("LOGIN FAILED");
+    }
+
+    //By this point we know the user has logged in and is a legitimate user so will assign user permissions appropriately
+    if (successResponse.data["is_admin"]) {
+      setUserStatus("admin");
+    } else {
+      setUserStatus("standard");
+    }
+
+    setUserEmail(successResponse.data["email"]);
+    setUsername(successResponse.data["username"]);
+  };
 
   const value = {
     userID,

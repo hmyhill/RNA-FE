@@ -60,16 +60,23 @@ const Login = () => {
   };
 
   //Function to handle the signup button being pressed
-  const handleSignup = () => {
+  const handleSignup = async () => {
     //If the form is already in signup mode
     if (formMode === "signup") {
       //And the form is valid
       if (validateForm()) {
         //TODO: Add API request to backend for signup and error handling for error being rejected
         //After user signup is successful, execute login logic to update user context with relevant information
-        userState.signup(emailInput, passwordInput);
-        //Then navigate to world page
-        navigate("world");
+        try {
+          await userState.signup(emailInput, passwordInput);
+          //Then navigate to world page
+          navigate("world");
+        } catch {
+          setBadDetails({
+            problem: true,
+            description: `Your password must contain at least 8 characters, cannot be commonly used, and cannot be entirely numeric`,
+          });
+        }
       }
     } else {
       //If not already in signup mode, switch to signup and clear any errors
