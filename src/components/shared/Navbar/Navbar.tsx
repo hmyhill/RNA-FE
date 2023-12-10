@@ -40,14 +40,12 @@ export default function Navbar(props: NavbarProps) {
   const userState = UserState();
 
   //Function to be called whenever a user attempts to logout or login through the navbar
-  const logoutUser = () => {
-    //If user is currently logged in, then log them out and send them to the login screen
-    if (userState.userStatus !== "loggedOut") {
-      userState.logout();
-    }
-
-    //Send to login screen regardless of already logged in or not
+  const logoutUser = async () => {
     navigate("/login");
+    //If user is currently logged in, then log them out
+    if (userState.userStatus !== "loggedOut") {
+      await userState.logout();
+    }
   };
 
   return (

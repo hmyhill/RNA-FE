@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { userStatuses } from "./types/userStatuses";
-import { httpPost } from "../../utils/api.utils";
+import { httpGet, httpPost } from "../../utils/api.utils";
 
 //Declare the interface for the user context
 interface IUserContext {
@@ -41,18 +41,24 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   const [username, setUsername] = useState<string | null>(null);
 
   //Will load any relevant user related cached data on startup
-  const onStartup = useCallback(async () => {
+  const onStartup = async () => {
     //TODO: Ensure to add a system to check local cache for existing JWT
     const successResponse = await httpPost(
       "/api/login/",
       {},
       {
-        headers: { withCredentials: true },
+        headers: { withCredentials: false },
       }
     );
-
+    console.log("MAKING ON STARTUP REQUEST");
     if (successResponse.headers["content-type"] !== "application/json") {
-      logout();
+      setUserStatus("loggedOut");
+      setUserID(null);
+      setUserEmail(null);
+      setUsername(null);
+      localStorage.removeItem("rnaUploadStory");
+      localStorage.removeItem("rnaUploadHeadline");
+      localStorage.removeItem("rnaUploadImageURL");
     } else {
       //By this point we know the user has logged in and is a legitimate user so will assign user permissions appropriately
       if (successResponse.data["is_admin"]) {
@@ -64,13 +70,20 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
       setUserEmail(successResponse.data["email"]);
       setUsername(successResponse.data["username"]);
     }
-  }, []);
+  };
 
   //Will ensure all relevant access is revoked on logout
-  const logout = useCallback(() => {
+  const logout = async () => {
     //TODO: On logout, ensure JWT is removed from memory
     setUserStatus("loggedOut");
-  }, []);
+    setUserID(null);
+    setUserEmail(null);
+    setUsername(null);
+    localStorage.removeItem("rnaUploadStory");
+    localStorage.removeItem("rnaUploadHeadline");
+    localStorage.removeItem("rnaUploadImageURL");
+    await httpGet("/api/accounts/logout/", { withCredentials: true });
+  };
 
   //Ensure relevant accesses are granted on login
   const login = async (email: string, password: string) => {
