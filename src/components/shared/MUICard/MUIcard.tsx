@@ -29,6 +29,7 @@ import {
 } from "@mui/icons-material";
 import { blue, green, purple, red } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { UserState } from "../../../contexts/User/UserContext";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -65,6 +66,8 @@ const style = {
 };
 
 export default function MUICard(props: CardProps) {
+  const userState = UserState();
+
   const [expanded, setExpanded] = React.useState(false);
 
   const [isClicked, setIsClicked] = React.useState(false);
@@ -167,13 +170,15 @@ export default function MUICard(props: CardProps) {
             {" "}
             1.7k Views
           </Typography>
-          <IconButton
-            onClick={handleClick}
-            style={iconStyle}
-            aria-label="add to favorites"
-          >
-            <Favorite />
-          </IconButton>
+          {userState.userStatus !== "loggedOut" && (
+            <IconButton
+              onClick={handleClick}
+              style={iconStyle}
+              aria-label="add to favorites"
+            >
+              <Favorite />
+            </IconButton>
+          )}
           <IconButton aria-label="share">
             <Share onClick={handleOpen} />
             <Modal
