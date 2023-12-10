@@ -6,7 +6,7 @@ import { UserState } from "./contexts/User/UserContext";
 function App() {
   //Load userState from user context
   const userState = UserState();
-
+  userState.onStartup();
   //Dynamically generate allowable routes dependent on the current users status
   const { allowedRoutes } = getRoutes(userState.userStatus);
 

@@ -41,8 +41,29 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   const [username, setUsername] = useState<string | null>(null);
 
   //Will load any relevant user related cached data on startup
-  const onStartup = useCallback(() => {
+  const onStartup = useCallback(async () => {
     //TODO: Ensure to add a system to check local cache for existing JWT
+    const successResponse = await httpPost(
+      "/api/login/",
+      {},
+      {
+        headers: { withCredentials: true },
+      }
+    );
+
+    if (successResponse.headers["content-type"] !== "application/json") {
+      logout();
+    } else {
+      //By this point we know the user has logged in and is a legitimate user so will assign user permissions appropriately
+      if (successResponse.data["is_admin"]) {
+        setUserStatus("admin");
+      } else {
+        setUserStatus("standard");
+      }
+
+      setUserEmail(successResponse.data["email"]);
+      setUsername(successResponse.data["username"]);
+    }
   }, []);
 
   //Will ensure all relevant access is revoked on logout
