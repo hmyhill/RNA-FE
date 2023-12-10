@@ -52,15 +52,26 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   //Ensure relevant accesses are granted on login
-  const login = useCallback(async (email: string, password: string) => {
+  const login = async (email: string, password: string) => {
     const formData = new FormData();
     formData.append("username", email);
     formData.append("password", password);
-    await httpPost("accounts/login/", formData, {
+    await httpPost("/api/accounts/login/", formData, {
       headers: { "Content-Type": "multipart/form-data" },
       withCredentials: true,
     });
-  }, []);
+    const successResponse = await httpPost(
+      "/api/login/",
+      {},
+      {
+        headers: { withCredentials: true },
+      }
+    );
+
+    if (successResponse.headers["content-type"] !== "application/json") {
+      throw new Error("LOGIN FAILED");
+    }
+  };
 
   //Ensure relevant accesses are granted on login
   const signup = useCallback((email: string, password: string) => {}, []);

@@ -33,16 +33,24 @@ const Login = () => {
   const navigate = useNavigate();
 
   //Function to handle the login button being pressed
-  const handleLogin = () => {
+  const handleLogin = async () => {
     //If form already in login mode
     if (formMode === "login") {
       //And form is valid
       if (validateForm()) {
         //TODO: Add API request to backend for login and error handling for error being rejected
         //Login user
-        userState.login(emailInput, passwordInput);
-        //Then navigate to homepage
-        navigate("world");
+        try {
+          await userState.login(emailInput, passwordInput);
+          //Then navigate to homepage
+          navigate("world");
+        } catch {
+          setBadDetails({
+            problem: true,
+            description:
+              "Please check that a valid username and password were entered",
+          });
+        }
       }
     } else {
       //Otherwise toggle to login mode and clear any errors
