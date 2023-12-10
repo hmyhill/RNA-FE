@@ -73,14 +73,17 @@ const Account = () => {
     } else {
       //If all fields are ok, attempt to send request to backend
       try {
+        //Construct form data
         const formData = new FormData();
         formData.append("old_password", oldPassword);
         formData.append("new_password1", newPassword);
         formData.append("new_password2", newPasswordConfirm);
+        //Post
         await httpPost("/api/settings/password/", formData, {
           headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         });
+        //Set success message
         setUpdatePasswordNotification({
           type: "success",
           description: "Password updated successfully",
@@ -106,6 +109,7 @@ const Account = () => {
       });
     } else {
       try {
+        //Construct form data
         const formData = new FormData();
         formData.append("username", updateRoleEmail);
         const isAdmin: Boolean = updateType === "admin";
@@ -115,6 +119,7 @@ const Account = () => {
           headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
         });
+        //Set success message
         setUpdateRoleNotification({
           type: "success",
           description: "Role updated successfully",
@@ -137,10 +142,13 @@ const Account = () => {
   };
   const handleDeletion = async () => {
     try {
+      //If deleting account, send user back to login screen
       navigate("/login");
+      //Then delete from backend and process a logout style request on FE
       await httpGet("/api/delete-user/");
       await userState.logout();
     } catch (error) {
+      //If anything goes wrong, display error to user
       setDeleteAccountError(
         "There was a problem while deleting your account. Please try again"
       );

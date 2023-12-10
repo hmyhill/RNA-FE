@@ -42,7 +42,7 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
 
   //Will load any relevant user related cached data on startup
   const onStartup = async () => {
-    //TODO: Ensure to add a system to check local cache for existing JWT
+    //Send request to backend login endpoint
     const successResponse = await httpPost(
       "/api/login/",
       {},
@@ -50,6 +50,8 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
         headers: { withCredentials: false },
       }
     );
+
+    //If user is already logged in, the response type will be JSON, otherwise they are not already logged in, and all user based contexts should be deleted
     if (successResponse.headers["content-type"] !== "application/json") {
       setUserStatus("loggedOut");
       setUserID(null);
@@ -66,6 +68,7 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
         setUserStatus("standard");
       }
 
+      //Set other user details as received from response
       setUserEmail(successResponse.data["email"]);
       setUsername(successResponse.data["username"]);
     }
@@ -73,7 +76,8 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
 
   //Will ensure all relevant access is revoked on logout
   const logout = async () => {
-    //TODO: On logout, ensure JWT is removed from memory
+    //All user related states and local storage items to be removed on logout
+    //The logout endpoint is also called which will revoke the sessionID cookie
     setUserStatus("loggedOut");
     setUserID(null);
     setUserEmail(null);
@@ -86,13 +90,19 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
 
   //Ensure relevant accesses are granted on login
   const login = async (email: string, password: string) => {
+    //Generate form data based on user inputs
     const formData = new FormData();
     formData.append("username", email);
     formData.append("password", password);
+
+    //Attempt login
     await httpPost("/api/accounts/login/", formData, {
       headers: { "Content-Type": "multipart/form-data" },
       withCredentials: true,
     });
+
+    //The login endpoint will not inform us of a succesful login during the login attempt as this is hidden from browser
+    //Instead we make request to /api/login/ endpoint which, if you are already logged in, will provide user details
     const successResponse = await httpPost(
       "/api/login/",
       {},
@@ -101,6 +111,7 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
       }
     );
 
+    //If the response is not a JSON, then the user was not logged in and something has gone wrong, throw an error
     if (successResponse.headers["content-type"] !== "application/json") {
       logout();
       throw new Error("LOGIN FAILED");
@@ -113,21 +124,27 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
       setUserStatus("standard");
     }
 
+    //The other user details are set as appropriate
     setUserEmail(successResponse.data["email"]);
     setUsername(successResponse.data["username"]);
   };
 
   //Ensure relevant accesses are granted on login
   const signup = async (email: string, password: string) => {
+    //Generate form data as provided, some of this needs to be replicated to meet BE criteria
     const formData = new FormData();
     formData.append("username", email);
     formData.append("email", email);
     formData.append("password1", password);
     formData.append("password2", password);
+
+    //Attempt signup (which can be done through a post request to /api/login/)
     await httpPost("/api/login/", formData, {
       headers: { "Content-Type": "multipart/form-data" },
       withCredentials: true,
     });
+
+    //If signup was succesful then a followup request to login will return the user detils
     const successResponse = await httpPost(
       "/api/login/",
       {},
@@ -136,6 +153,7 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
       }
     );
 
+    //If the response is not JSON data then the signup request failed, and an error should be thrown
     if (successResponse.headers["content-type"] !== "application/json") {
       logout();
       throw new Error("LOGIN FAILED");
@@ -148,6 +166,7 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
       setUserStatus("standard");
     }
 
+    //Set the other user details as received from backend
     setUserEmail(successResponse.data["email"]);
     setUsername(successResponse.data["username"]);
   };

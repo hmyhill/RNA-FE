@@ -51,17 +51,19 @@ const Upload = () => {
       });
     } else {
       try {
+        //Set the categoryID to be sent to BE dependent on the selection made, and the ID of those selections in the BE
         let categoryID = 0;
-        //Settings id's as appropriate based on backend assignment of category IDs
-        if (categoryChoice === "world") {
-          categoryID = 4;
+        if (categoryChoice === "entertainment") {
+          categoryID = 1;
         } else if (categoryChoice === "sport") {
           categoryID = 2;
-        } else if (categoryChoice === "entertainment") {
-          categoryID = 1;
         } else if (categoryChoice === "tech") {
           categoryID = 3;
+        } else if (categoryChoice === "world") {
+          categoryID = 4;
         }
+
+        //Create formData based on details entered by user
         const formData = new FormData();
         formData.append("title", headline);
         formData.append("content", story);
@@ -73,12 +75,16 @@ const Upload = () => {
           withCredentials: true,
         });
 
+        //Delete the request from FE now that it has been uploaded
         handleDelete();
+
+        //And set a success message
         setBadDetails({
           type: "success",
           description: "Uploaded succesfully",
         });
       } catch (error) {
+        //If anything goes wrong, display an error messge
         setBadDetails({
           type: "error",
           description:

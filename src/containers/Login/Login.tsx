@@ -38,13 +38,13 @@ const Login = () => {
     if (formMode === "login") {
       //And form is valid
       if (validateForm()) {
-        //TODO: Add API request to backend for login and error handling for error being rejected
         //Login user
         try {
           await userState.login(emailInput, passwordInput);
           //Then navigate to homepage
           navigate("world");
         } catch {
+          //If anything goes wrong, display an error to users
           setBadDetails({
             problem: true,
             description:
@@ -65,13 +65,13 @@ const Login = () => {
     if (formMode === "signup") {
       //And the form is valid
       if (validateForm()) {
-        //TODO: Add API request to backend for signup and error handling for error being rejected
-        //After user signup is successful, execute login logic to update user context with relevant information
+        //Attempt signup
         try {
           await userState.signup(emailInput, passwordInput);
           //Then navigate to world page
           navigate("world");
         } catch {
+          //Throw an error if anything goes wrong
           setBadDetails({
             problem: true,
             description: `Your password must contain at least 8 characters, cannot be commonly used, and cannot be entirely numeric`,
@@ -104,6 +104,7 @@ const Login = () => {
       });
     }
 
+    //Check that password and confirm password match when signing up for an account
     if (formMode === "signup" && passwordInput !== confirmPasswordInput) {
       valid = false;
       setBadDetails({

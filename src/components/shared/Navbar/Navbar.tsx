@@ -50,34 +50,7 @@ export default function Navbar(props: NavbarProps) {
 
   return (
     <>
-      {/* Each of the following buttons should be shown only if the application is in debug mode */}
-      {debug && (
-        <button
-          onClick={() => {
-            userState.login("admin", "letmein");
-          }}
-        >
-          Standard
-        </button>
-      )}
-      {debug && (
-        <button
-          onClick={() => {
-            userState.login("admin", "letmein");
-          }}
-        >
-          Admin
-        </button>
-      )}
-      {debug && (
-        <button
-          onClick={() => {
-            userState.logout();
-          }}
-        >
-          Logout
-        </button>
-      )}
+      {/* TO FOLLOW SECURE CODING PRACTICES, THE PREVIOUSLY PRESENT DEBUG MODE HAS BEEN REMOVED HERE*/}
       <AppBar position="sticky">
         <Toolbar
           sx={{

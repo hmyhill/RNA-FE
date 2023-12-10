@@ -170,6 +170,7 @@ export default function MUICard(props: CardProps) {
             {" "}
             1.7k Views
           </Typography>
+          {/* The like button should only be visible to users who are not logged out*/}
           {userState.userStatus !== "loggedOut" && (
             <IconButton
               onClick={handleClick}
