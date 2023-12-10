@@ -73,9 +73,13 @@ const Account = () => {
     } else {
       //If all fields are ok, attempt to send request to backend
       try {
-        await httpPost("/user/changepassword", {
-          email: userState.userEmail,
-          newpassword: newPassword,
+        const formData = new FormData();
+        formData.append("old_password", oldPassword);
+        formData.append("new_password1", newPassword);
+        formData.append("new_password2", newPasswordConfirm);
+        await httpPost("/api/settings/password/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         });
         setUpdatePasswordNotification({
           type: "success",
