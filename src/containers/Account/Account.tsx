@@ -106,10 +106,14 @@ const Account = () => {
       });
     } else {
       try {
+        const formData = new FormData();
+        formData.append("username", updateRoleEmail);
+        const isAdmin: Boolean = updateType === "admin";
+        formData.append("is_admin", isAdmin.toString());
         //Attempt to update role
-        await httpPost("/user/changepermissions", {
-          email: userState.userEmail,
-          role: updateType,
+        await httpPost("api/accounts/change-user-permissions/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         });
         setUpdateRoleNotification({
           type: "success",
