@@ -19,9 +19,12 @@ import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SyncLockIcon from "@mui/icons-material/SyncLock";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { httpDelete, httpPost } from "../../utils/api.utils";
+import { httpDelete, httpGet, httpPost } from "../../utils/api.utils";
+import { useNavigate } from "react-router-dom";
 
 const Account = () => {
+  const navigate = useNavigate();
+
   //Declare all field related states
   const [oldPassword, setOldPassword] = React.useState<string>("");
   const [newPassword, setNewPassword] = React.useState<string>("");
@@ -126,7 +129,9 @@ const Account = () => {
   };
   const handleDeletion = async () => {
     try {
-      await httpDelete("/user/delete/" + userState.userID);
+      navigate("/login");
+      await httpGet("/api/delete-user/");
+      await userState.logout();
     } catch (error) {
       setDeleteAccountError(
         "There was a problem while deleting your account. Please try again"
@@ -178,16 +183,14 @@ const Account = () => {
                 <Stack
                   display="flex"
                   flexDirection="row"
-                  justifyContent= "space-between"
+                  justifyContent="space-between"
                 >
-                  <Typography variant="h5">
-                    Change Password
-                  </Typography>
+                  <Typography variant="h5">Change Password</Typography>
 
                   <CardActions
                     sx={{
                       justifyContent: "right",
-                      p: "0"
+                      p: "0",
                     }}
                   >
                     <Button
@@ -269,16 +272,14 @@ const Account = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <Typography variant="h5">
-                  Delete Account
-                </Typography>
+                <Typography variant="h5">Delete Account</Typography>
                 {/* If there has been an error, display it to user */}
                 {deleteAccountError !== "" && (
                   <Typography variant="body2" color={"red"}>
                     {deleteAccountError}
                   </Typography>
                 )}
-              
+
                 <CardActions
                   sx={{
                     p: "0",
@@ -304,11 +305,13 @@ const Account = () => {
         {userState.userStatus === "admin" && (
           <Grid container xs={12} sm={6}>
             <Grid item xs={12} sx={{ padding: "5px" }}>
-              <Card sx={{
-                padding: "10px",
-                display: "flex",
-                flexDirection: "column",
-              }}>
+              <Card
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 <Typography variant="h5" component="div">
                   Admin Panel
                 </Typography>
@@ -346,7 +349,7 @@ const Account = () => {
                   sx={{
                     display: "flex",
                     justifyContent: "right",
-                    p: "0"
+                    p: "0",
                   }}
                 >
                   <Typography
