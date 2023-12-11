@@ -33,16 +33,24 @@ const Login = () => {
   const navigate = useNavigate();
 
   //Function to handle the login button being pressed
-  const handleLogin = () => {
+  const handleLogin = async () => {
     //If form already in login mode
     if (formMode === "login") {
       //And form is valid
       if (validateForm()) {
-        //TODO: Add API request to backend for login and error handling for error being rejected
         //Login user
-        userState.login("standard", "mockEmail", "mockUsername", 1);
-        //Then navigate to homepage
-        navigate("world");
+        try {
+          await userState.login(emailInput, passwordInput);
+          //Then navigate to homepage
+          navigate("world");
+        } catch {
+          //If anything goes wrong, display an error to users
+          setBadDetails({
+            problem: true,
+            description:
+              "Please check that a valid username and password were entered",
+          });
+        }
       }
     } else {
       //Otherwise toggle to login mode and clear any errors
@@ -52,16 +60,23 @@ const Login = () => {
   };
 
   //Function to handle the signup button being pressed
-  const handleSignup = () => {
+  const handleSignup = async () => {
     //If the form is already in signup mode
     if (formMode === "signup") {
       //And the form is valid
       if (validateForm()) {
-        //TODO: Add API request to backend for signup and error handling for error being rejected
-        //After user signup is successful, execute login logic to update user context with relevant information
-        userState.login("standard", "mockEmail", "mockUsername", 1);
-        //Then navigate to world page
-        navigate("world");
+        //Attempt signup
+        try {
+          await userState.signup(emailInput, passwordInput);
+          //Then navigate to world page
+          navigate("world");
+        } catch {
+          //Throw an error if anything goes wrong
+          setBadDetails({
+            problem: true,
+            description: `Your password must contain at least 8 characters, cannot be commonly used, and cannot be entirely numeric`,
+          });
+        }
       }
     } else {
       //If not already in signup mode, switch to signup and clear any errors
@@ -86,6 +101,15 @@ const Login = () => {
       setBadDetails({
         problem: true,
         description: "You must complete all fields",
+      });
+    }
+
+    //Check that password and confirm password match when signing up for an account
+    if (formMode === "signup" && passwordInput !== confirmPasswordInput) {
+      valid = false;
+      setBadDetails({
+        problem: true,
+        description: "Your passwords must match",
       });
     }
 
@@ -204,13 +228,13 @@ const Login = () => {
               height: "100%",
               justifyContent: "right",
               px: "0",
-              py: "4px"
+              py: "4px",
             }}
           >
             {/* On button press, handleLogin function is called */}
             {/* Button variant changes depending on the screen mode */}
             <Button
-              color = "success"
+              color="success"
               variant={formMode === "login" ? "contained" : "outlined"}
               onClick={handleLogin}
             >

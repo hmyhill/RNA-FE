@@ -30,6 +30,7 @@ import {
 } from "@mui/icons-material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { blue, green, purple, red } from "@mui/material/colors";
+import { UserState } from "../../../contexts/User/UserContext";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -66,6 +67,7 @@ const style = {
 };
 
 export default function MainMUICard(props: CardProps) {
+  const userState = UserState();
   const [expanded, setExpanded] = React.useState(false);
   const [isClicked, setIsClicked] = React.useState(false);
 
@@ -224,13 +226,16 @@ export default function MainMUICard(props: CardProps) {
             {" "}
             1.7k Views
           </Typography>
-          <IconButton
-            onClick={handleClick}
-            style={iconStyle}
-            aria-label="add to favorites"
-          >
-            <Favorite />
-          </IconButton>
+          {/* The like button should only be visible to users who are not currently logged out*/}
+          {userState.userStatus !== "loggedOut" && (
+            <IconButton
+              onClick={handleClick}
+              style={iconStyle}
+              aria-label="add to favorites"
+            >
+              <Favorite />
+            </IconButton>
+          )}
           <IconButton aria-label="share">
             <Share onClick={handleOpen} />
             <Modal

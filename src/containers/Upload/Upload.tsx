@@ -51,18 +51,40 @@ const Upload = () => {
       });
     } else {
       try {
-        await httpPost("story/upload", {
-          title: headline,
-          content: story,
-          category: categoryChoice,
-          image_url: imageURL,
+        //Set the categoryID to be sent to BE dependent on the selection made, and the ID of those selections in the BE
+        let categoryID = 0;
+        if (categoryChoice === "entertainment") {
+          categoryID = 1;
+        } else if (categoryChoice === "sport") {
+          categoryID = 2;
+        } else if (categoryChoice === "tech") {
+          categoryID = 3;
+        } else if (categoryChoice === "world") {
+          categoryID = 4;
+        }
+
+        //Create formData based on details entered by user
+        const formData = new FormData();
+        formData.append("title", headline);
+        formData.append("content", story);
+        formData.append("imageURl", imageURL);
+        formData.append("category", categoryID.toString());
+        //Attempt to update role
+        await httpPost("api/admin/article/post/add/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         });
+
+        //Delete the request from FE now that it has been uploaded
         handleDelete();
+
+        //And set a success message
         setBadDetails({
           type: "success",
           description: "Uploaded succesfully",
         });
       } catch (error) {
+        //If anything goes wrong, display an error messge
         setBadDetails({
           type: "error",
           description:
@@ -145,16 +167,13 @@ const Upload = () => {
           {/* Utilise MUIs fade API to create a fadeable text and icon combination for autosave functionality */}
           <Fade appear={false} timeout={500} in={showAutosave}>
             <Stack
-                display= "flex"
-                flexDirection= "row"
-                alignItems= "center"
-                justifyContent= "center"
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
             >
-              <Typography
-                variant="h6"
-                color="green"
-              >
-                Offline Autosave  
+              <Typography variant="h6" color="green">
+                Offline Autosave
               </Typography>
               <SaveIcon color="success"></SaveIcon>
             </Stack>
@@ -236,7 +255,6 @@ const Upload = () => {
               <MenuItem value={"entertainment"}>Entertainment</MenuItem>
               <MenuItem value={"sport"}>Sport</MenuItem>
               <MenuItem value={"tech"}>Tech</MenuItem>
-              <MenuItem value={"ourstories"}>Our Stories</MenuItem>
             </Select>
 
             {/* If something has gone wrong, show details of error in red text*/}
@@ -254,7 +272,7 @@ const Upload = () => {
               sx={{
                 justifyContent: "right",
                 p: "0",
-                mt: "4px"
+                mt: "4px",
               }}
             >
               {/* Delete Story button*/}

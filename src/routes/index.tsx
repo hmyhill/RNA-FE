@@ -18,6 +18,7 @@ export function getRoutes(userStatus: userStatuses) {
     { path: "sport", element: <Sport /> },
     { path: "tech", element: <Tech /> },
     { path: "world", element: <World /> },
+    { path: "login", element: <Login /> },
   ];
 
   //If user is logged in then add on account routes
@@ -31,13 +32,6 @@ export function getRoutes(userStatus: userStatuses) {
   if (userStatus === "admin") {
     allowedRoutes = allowedRoutes.concat([
       { path: "upload", element: <Upload /> },
-    ]);
-  }
-
-  //Only allow user to access login or signup pages if they are NOT currently signed in
-  if (userStatus !== "admin" && userStatus !== "standard") {
-    allowedRoutes = allowedRoutes.concat([
-      { path: "login", element: <Login /> },
     ]);
   }
 

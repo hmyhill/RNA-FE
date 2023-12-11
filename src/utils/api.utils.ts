@@ -28,15 +28,8 @@ const httpPost = async <T>(
   data: any,
   config: AxiosRequestConfig = {}
 ) => {
-  if (!config.headers) config.headers = {};
-  config.headers["Content-Type"] = "application/json";
-
   //Submit the request
-  const response = await axiosInstance.post<T>(
-    url,
-    JSON.stringify(data),
-    config
-  );
+  const response = await axiosInstance.post<T>(url, data, config);
   return response;
 };
 

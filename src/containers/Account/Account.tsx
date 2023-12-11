@@ -19,9 +19,12 @@ import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SyncLockIcon from "@mui/icons-material/SyncLock";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { httpDelete, httpPost } from "../../utils/api.utils";
+import { httpDelete, httpGet, httpPost } from "../../utils/api.utils";
+import { useNavigate } from "react-router-dom";
 
 const Account = () => {
+  const navigate = useNavigate();
+
   //Declare all field related states
   const [oldPassword, setOldPassword] = React.useState<string>("");
   const [newPassword, setNewPassword] = React.useState<string>("");
@@ -70,10 +73,17 @@ const Account = () => {
     } else {
       //If all fields are ok, attempt to send request to backend
       try {
-        await httpPost("/user/changepassword", {
-          email: userState.userEmail,
-          newpassword: newPassword,
+        //Construct form data
+        const formData = new FormData();
+        formData.append("old_password", oldPassword);
+        formData.append("new_password1", newPassword);
+        formData.append("new_password2", newPasswordConfirm);
+        //Post
+        await httpPost("/api/settings/password/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         });
+        //Set success message
         setUpdatePasswordNotification({
           type: "success",
           description: "Password updated successfully",
@@ -99,11 +109,17 @@ const Account = () => {
       });
     } else {
       try {
+        //Construct form data
+        const formData = new FormData();
+        formData.append("username", updateRoleEmail);
+        const isAdmin: Boolean = updateType === "admin";
+        formData.append("is_admin", isAdmin.toString());
         //Attempt to update role
-        await httpPost("/user/changepermissions", {
-          email: userState.userEmail,
-          role: updateType,
+        await httpPost("api/accounts/change-user-permissions/", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         });
+        //Set success message
         setUpdateRoleNotification({
           type: "success",
           description: "Role updated successfully",
@@ -126,8 +142,13 @@ const Account = () => {
   };
   const handleDeletion = async () => {
     try {
-      await httpDelete("/user/delete/" + userState.userID);
+      //If deleting account, send user back to login screen
+      navigate("/login");
+      //Then delete from backend and process a logout style request on FE
+      await httpGet("/api/delete-user/");
+      await userState.logout();
     } catch (error) {
+      //If anything goes wrong, display error to user
       setDeleteAccountError(
         "There was a problem while deleting your account. Please try again"
       );
@@ -178,16 +199,14 @@ const Account = () => {
                 <Stack
                   display="flex"
                   flexDirection="row"
-                  justifyContent= "space-between"
+                  justifyContent="space-between"
                 >
-                  <Typography variant="h5">
-                    Change Password
-                  </Typography>
+                  <Typography variant="h5">Change Password</Typography>
 
                   <CardActions
                     sx={{
                       justifyContent: "right",
-                      p: "0"
+                      p: "0",
                     }}
                   >
                     <Button
@@ -269,16 +288,14 @@ const Account = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <Typography variant="h5">
-                  Delete Account
-                </Typography>
+                <Typography variant="h5">Delete Account</Typography>
                 {/* If there has been an error, display it to user */}
                 {deleteAccountError !== "" && (
                   <Typography variant="body2" color={"red"}>
                     {deleteAccountError}
                   </Typography>
                 )}
-              
+
                 <CardActions
                   sx={{
                     p: "0",
@@ -304,11 +321,13 @@ const Account = () => {
         {userState.userStatus === "admin" && (
           <Grid container xs={12} sm={6}>
             <Grid item xs={12} sx={{ padding: "5px" }}>
-              <Card sx={{
-                padding: "10px",
-                display: "flex",
-                flexDirection: "column",
-              }}>
+              <Card
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 <Typography variant="h5" component="div">
                   Admin Panel
                 </Typography>
@@ -346,7 +365,7 @@ const Account = () => {
                   sx={{
                     display: "flex",
                     justifyContent: "right",
-                    p: "0"
+                    p: "0",
                   }}
                 >
                   <Typography
