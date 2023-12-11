@@ -173,7 +173,7 @@ const Upload = () => {
               justifyContent="center"
             >
               <Typography variant="h6" color="green">
-                Offline Autosave
+                {navigator.onLine ? "Autosave" : "Offline Autosave"}
               </Typography>
               <SaveIcon color="success"></SaveIcon>
             </Stack>
